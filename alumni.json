@@ -1,0 +1,97 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "Alumni API Documentation",
+      "version": ""
+    },
+    "servers": [
+        {
+            "url": "http://localhost:10000",
+            "description": "Local server"
+          },
+          {
+            "url": "https://devapi01.awfatech.com",
+            "description": "Development server"
+          },
+          {
+            "url": "https://api01.awfatech.com",
+            "description": "Production server" 
+        }
+    ],
+    "paths": {
+      "/alumni/create": {
+        "post": {
+          "parameters": [
+            {
+              "name": "x-encrypted-key",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "x-encrypted-user",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "dsfsdfsdf",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "default": "create_alumni"
+                    },
+                    "data": {
+                      "type": "object",
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false,
+                  "description": "dsfsdfsdf"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "alumni data created successfully"
+                      },
+                      "data": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          },
+          "x-codegen-request-body-name": ""
+        }
+      }
+    },
+    "components": {},
+    "x-original-swagger-version": "2.0"
+  }
