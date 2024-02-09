@@ -1,0 +1,967 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Staff API Documentation",
+    "version": ""
+  },
+  "servers": [
+    {
+		  "url": "https://api.example.com/v1",
+		  "description": "Production server"
+		},
+		{
+		  "url": "https://staging.api.example.com/v1",
+		  "description": "Staging server"
+		},
+		{
+		  "url": "http://localhost:3000/v1",
+		  "description": "Local development server"
+		}
+  ],
+  "paths": {
+    "/api/v1/mshr/staff.php": {
+      "post": {
+        "description": "API for fetching and searching staff data list.",
+        "parameters": [
+          {
+            "name": "x-encrypted-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-encrypted-user",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "required": [
+                  "filter_branch_id",
+                  "page_limit"
+                ],
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "default": "get_staff_list"
+                  },
+                  "filter_branch_id": {
+                    "type": "string",
+                    "example": "0"
+                  },
+                  "filter_delete": {
+                    "type": "string",
+                    "example": "0"
+                  },
+                  "filter_search": {
+                    "type": "string",
+                    "example": "Razali"
+                  },
+                  "page_limit": {
+                    "type": "integer",
+                    "example": 40
+                  },
+                  "page_start": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "page_sort": {
+                    "type": "string",
+                    "example": "desc"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": " staff list data fetch successfully "
+                    },
+                    "data": {
+                      "type": "object",
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "message"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action Not Found"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": ""
+      }
+    },
+    "/staff/details": {
+      "post": {
+        "description": "API for fetching and searching staff data list.",
+        "parameters": [
+          {
+            "name": "x-encrypted-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-encrypted-user",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "required": [
+                  "filter_uid"
+                ],
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "default": "get_staff_one"
+                  },
+                  "filter_uid": {
+                    "type": "string",
+                    "example": "0132041322"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data(1)",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": " staff data fetch successfully "
+                    },
+                    "data(1)": {
+                      "type": "object",
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "message"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action Not Found"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": ""
+      }
+    },
+    "/staff/create": {
+      "post": {
+        "parameters": [
+          {
+            "name": "x-encrypted-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-encrypted-user",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "default": "create_staff"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "staff data created successfully"
+                    },
+                    "data": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action not found"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": ""
+      }
+    },
+    "/staff/update": {
+      "post": {
+        "parameters": [
+          {
+            "name": "x-encrypted-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-encrypted-user",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "required": [
+                  "action",
+                  "data",
+                  "filter_uid"
+                ],
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "default": "update_staff"
+                  },
+                  "filter_uid": {
+                    "type": "string",
+                    "example": "A0003",
+                    "default": "update_staff"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "staff data updated successfully"
+                    },
+                    "data": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action not found"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": ""
+      }
+    },
+    "/staff/delete": {
+      "post": {
+        "parameters": [
+          {
+            "name": "x-encrypted-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-encrypted-user",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "required": [
+                  "action",
+                  "filter_uid"
+                ],
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "default": "update_staff"
+                  },
+                  "filter_uid": {
+                    "type": "string",
+                    "example": "A0003",
+                    "default": "update_staff"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "staff data deleted successfully"
+                    },
+                    "data": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action not found"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": ""
+      }
+    }
+  },
+  "components": {},
+  "x-original-swagger-version": "2.0"
+}

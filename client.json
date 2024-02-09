@@ -1,0 +1,1710 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+	  "title": "Client API Documentation",
+	  "version": ""
+	},
+	"servers": [
+		{
+		  "url": "https://api.example.com/v1",
+		  "description": "Production server"
+		},
+		{
+		  "url": "https://staging.api.example.com/v1",
+		  "description": "Staging server"
+		},
+		{
+		  "url": "http://localhost:3000/v1",
+		  "description": "Local development server"
+		}
+	  ],
+	"paths": {
+	  "/client/list": {
+		"post": {
+		  "description": "API for fetching and searching client data list",
+		  "parameters": [
+			{
+			  "name": "x-encrypted-key",
+			  "in": "header",
+			  "required": true,
+			  "type": "string"
+			},
+			{
+			  "name": "x-encrypted-user",
+			  "in": "header",
+			  "required": true,
+			  "type": "string"
+			},
+			{
+			  "name": "",
+			  "in": "body",
+			  "required": false,
+			  "schema": {
+				"type": "object",
+				"required": [
+				  "action",
+				  "filter_branch_id",
+				  "page_limit"
+				],
+				"properties": {
+				  "action": {
+					"type": "string",
+					"default": "get_client_list"
+				  },
+				  "filter_branch_id": {
+					"type": "string",
+					"example": "0"
+				  },
+				  "filter_delete": {
+					"type": "integer",
+					"example": 0
+				  },
+				  "filter_search": {
+					"type": "string",
+					"example": "Razali"
+				  },
+				  "page_limit": {
+					"type": "integer",
+					"example": 40
+				  },
+				  "page_start": {
+					"type": "integer",
+					"example": 1
+				  },
+				  "page_sort": {
+					"type": "string",
+					"example": "desc"
+				  }
+				},
+				"additionalProperties": false
+			  }
+			}
+		  ],
+		  "responses": {
+			"200": {
+			  "description": "",
+			  "schema": {
+				"type": "object",
+				"required": [
+				  "success",
+				  "message",
+				  "data"
+				],
+				"properties": {
+				  "success": {
+					"type": "boolean",
+					"example": true
+				  },
+				  "message": {
+					"type": "string",
+					"example": "Client list dat fetched successfully"
+				  },
+				  "data": {
+					"type": "object",
+					"required": [
+					  "total_count",
+					  "total_data",
+					  "data"
+					],
+					"properties": {
+					  "total_count": {
+						"type": "integer",
+						"example": 20
+					  },
+					  "total_data": {
+						"type": "integer",
+						"example": 20
+					  },
+					  "data": {
+						"type": "object",
+						"required": [
+						  "id",
+						  "ic",
+						  "uid",
+						  "branch_id",
+						  "status",
+						  "status_name",
+						  "system_level",
+						  "user_no",
+						  "user_type",
+						  "file_image",
+						  "name",
+						  "phone",
+						  "email",
+						  "category",
+						  "category_name",
+						  "group",
+						  "group_name",
+						  "subgroup",
+						  "subgroup_name",
+						  "is_delete",
+						  "system",
+						  "personal",
+						  "contact",
+						  "address",
+						  "bank_info",
+						  "form_info"
+						],
+						"properties": {
+						  "id": {
+							"type": "string",
+							"example": "1"
+						  },
+						  "ic": {
+							"type": "string",
+							"example": "34567890"
+						  },
+						  "uid": {
+							"type": "string",
+							"example": "C00001"
+						  },
+						  "branch_id": {
+							"type": "integer",
+							"example": 0
+						  },
+						  "status": {
+							"type": "integer",
+							"example": 0
+						  },
+						  "status_name": {
+							"type": "string"
+						  },
+						  "system_level": {
+							"type": "string"
+						  },
+						  "user_no": {
+							"type": "string"
+						  },
+						  "user_type": {
+							"type": "string"
+						  },
+						  "file_image": {
+							"type": "string"
+						  },
+						  "name": {
+							"type": "string",
+							"example": "Jahir"
+						  },
+						  "phone": {
+							"type": "string",
+							"example": "34567890"
+						  },
+						  "email": {
+							"type": "string",
+							"example": "demo@client.com"
+						  },
+						  "category": {
+							"type": "string",
+							"example": "dummy category"
+						  },
+						  "category_name": {
+							"type": "string",
+							"example": "category name"
+						  },
+						  "group": {
+							"type": "string"
+						  },
+						  "group_name": {
+							"type": "string"
+						  },
+						  "subgroup": {
+							"type": "string"
+						  },
+						  "subgroup_name": {
+							"type": "string"
+						  },
+						  "is_delete": {
+							"type": "integer",
+							"example": 0
+						  },
+						  "system": {
+							"type": "object",
+							"properties": {
+							  "create_at": {
+								"type": "string",
+								"example": "2023-12-19"
+							  },
+							  "create_by": {
+								"type": "string"
+							  },
+							  "update_at": {
+								"type": "string",
+								"example": "2024-01-06 12:45:30"
+							  },
+							  "update_by": {
+								"type": "string",
+								"example": "Root"
+							  },
+							  "delete_at": {
+								"type": "string"
+							  },
+							  "delete_by": {
+								"type": "string"
+							  },
+							  "terminated_at": {
+								"type": "string"
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "personal": {
+							"type": "object",
+							"properties": {
+							  "full_name": {
+								"type": "string",
+								"example": "Mr Abedin"
+							  },
+							  "nick_name": {
+								"type": "string",
+								"example": "Mr Abedin"
+							  },
+							  "gender": {
+								"type": "string",
+								"example": "1"
+							  },
+							  "birth_date": {
+								"type": "string",
+								"example": "1995-09-19"
+							  },
+							  "race": {
+								"type": "string",
+								"example": "Malay"
+							  },
+							  "religion": {
+								"type": "string",
+								"example": "Islam"
+							  },
+							  "primary_phone": {
+								"type": "string",
+								"example": "0123456789"
+							  },
+							  "secondary_phone": {
+								"type": "string",
+								"example": "0123456789"
+							  },
+							  "primary_email": {
+								"type": "string",
+								"example": "demo@email.com"
+							  },
+							  "secondary_email": {
+								"type": "string",
+								"example": "demo2@email.com"
+							  },
+							  "citizen": {
+								"type": "string",
+								"example": "Malaysia"
+							  },
+							  "education": {
+								"type": "string",
+								"example": "phd"
+							  },
+							  "marital": {
+								"type": "string",
+								"example": "married"
+							  },
+							  "job_position": {
+								"type": "string"
+							  },
+							  "job_level": {
+								"type": "string"
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "contact": {
+							"type": "object",
+							"required": [
+							  "contact2"
+							],
+							"properties": {
+							  "contact2": {
+								"type": "object",
+								"properties": {
+								  "nick_name": {
+									"type": "string",
+									"example": "Abedin"
+								  },
+								  "full_name": {
+									"type": "string",
+									"example": "Abedin"
+								  },
+								  "primary_phone": {
+									"type": "string",
+									"example": "013456789"
+								  },
+								  "primary_email": {
+									"type": "string",
+									"example": "abd@email.com"
+								  },
+								  "citizen": {
+									"type": "string",
+									"example": "Malaysia"
+								  },
+								  "education": {
+									"type": "string",
+									"example": "phd"
+								  },
+								  "race": {
+									"type": "string",
+									"example": "malay"
+								  },
+								  "marital": {
+									"type": "string",
+									"example": "married"
+								  },
+								  "job_position": {
+									"type": "string"
+								  },
+								  "job_level": {
+									"type": "string"
+								  }
+								},
+								"additionalProperties": false
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "address": {
+							"type": "object",
+							"properties": {
+							  "main": {
+								"type": "object",
+								"required": [
+								  "line1",
+								  "line2",
+								  "city",
+								  "postcode",
+								  "state",
+								  "country",
+								  "district"
+								],
+								"properties": {
+								  "line1": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "line2": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "line3": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "city": {
+									"type": "string",
+									"example": "s jaya"
+								  },
+								  "postcode": {
+									"type": "string",
+									"example": "0000"
+								  },
+								  "state": {
+									"type": "string",
+									"example": "Selangor"
+								  },
+								  "country": {
+									"type": "string",
+									"example": "Malaysia"
+								  },
+								  "district": {
+									"type": "string",
+									"example": "dummy"
+								  }
+								},
+								"additionalProperties": false
+							  },
+							  "address2": {
+								"type": "object",
+								"required": [
+								  "line1",
+								  "line2",
+								  "city",
+								  "postcode",
+								  "state",
+								  "country",
+								  "district"
+								],
+								"properties": {
+								  "line1": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "line2": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "line3": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "city": {
+									"type": "string",
+									"example": "s jaya"
+								  },
+								  "postcode": {
+									"type": "string",
+									"example": "0000"
+								  },
+								  "state": {
+									"type": "string",
+									"example": "Selangor"
+								  },
+								  "country": {
+									"type": "string",
+									"example": "Malaysia"
+								  },
+								  "district": {
+									"type": "string",
+									"example": "dummy"
+								  }
+								},
+								"additionalProperties": false
+							  },
+							  "address3": {
+								"type": "object",
+								"required": [
+								  "line1",
+								  "line2",
+								  "city",
+								  "postcode",
+								  "state",
+								  "country",
+								  "district"
+								],
+								"properties": {
+								  "line1": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "line2": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "line3": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "city": {
+									"type": "string",
+									"example": "s jaya"
+								  },
+								  "postcode": {
+									"type": "string",
+									"example": "0000"
+								  },
+								  "state": {
+									"type": "string",
+									"example": "Selangor"
+								  },
+								  "country": {
+									"type": "string",
+									"example": "Malaysia"
+								  },
+								  "district": {
+									"type": "string",
+									"example": "dummy"
+								  }
+								},
+								"additionalProperties": false
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "bank_info": {
+							"type": "object",
+							"required": [
+							  "main",
+							  "bank2",
+							  "bank3"
+							],
+							"properties": {
+							  "main": {
+								"type": "object",
+								"required": [
+								  "bank_name",
+								  "account_number",
+								  "account_name",
+								  "branch_name",
+								  "swift_code"
+								],
+								"properties": {
+								  "bank_name": {
+									"type": "string",
+									"example": "dummy bank"
+								  },
+								  "account_number": {
+									"type": "string",
+									"example": "2345678785678"
+								  },
+								  "account_name": {
+									"type": "string",
+									"example": "dummy name"
+								  },
+								  "branch_name": {
+									"type": "string",
+									"example": "dummy branch"
+								  },
+								  "swift_code": {
+									"type": "string",
+									"example": "4567787"
+								  }
+								},
+								"additionalProperties": false
+							  },
+							  "bank2": {
+								"type": "object",
+								"required": [
+								  "bank_name",
+								  "account_number",
+								  "account_name",
+								  "branch_name",
+								  "swift_code"
+								],
+								"properties": {
+								  "bank_name": {
+									"type": "string",
+									"example": "dummy bank"
+								  },
+								  "account_number": {
+									"type": "string",
+									"example": "2345678785678"
+								  },
+								  "account_name": {
+									"type": "string",
+									"example": "dummy name"
+								  },
+								  "branch_name": {
+									"type": "string",
+									"example": "dummy branch"
+								  },
+								  "swift_code": {
+									"type": "string",
+									"example": "4567787"
+								  }
+								},
+								"additionalProperties": false
+							  },
+							  "bank3": {
+								"type": "object",
+								"required": [
+								  "bank_name",
+								  "account_number",
+								  "account_name",
+								  "branch_name",
+								  "swift_code"
+								],
+								"properties": {
+								  "bank_name": {
+									"type": "string",
+									"example": "dummy bank"
+								  },
+								  "account_number": {
+									"type": "string",
+									"example": "2345678785678"
+								  },
+								  "account_name": {
+									"type": "string",
+									"example": "dummy name"
+								  },
+								  "branch_name": {
+									"type": "string",
+									"example": "dummy branch"
+								  },
+								  "swift_code": {
+									"type": "string",
+									"example": "4567787"
+								  }
+								},
+								"additionalProperties": false
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "form_info": {
+							"type": "array",
+							"items": {
+							  "type": "object",
+							  "properties": {
+								"form_name": {
+								  "type": "string",
+								  "example": "client extra option"
+								},
+								"form_data": {
+								  "type": "array",
+								  "items": {
+									"type": "object",
+									"properties": {
+									  "data_id": {
+										"type": "integer",
+										"example": 1
+									  },
+									  "type": {
+										"type": "string"
+									  },
+									  "description": {
+										"type": "string",
+										"example": "text field"
+									  },
+									  "value": {
+										"type": "string"
+									  },
+									  "value_info": {
+										"type": "string"
+									  },
+									  "file_name": {
+										"type": "string"
+									  },
+									  "file_path": {
+										"type": "string"
+									  },
+									  "filter": {
+										"type": "string"
+									  },
+									  "remark": {
+										"type": "string"
+									  }
+									},
+									"additionalProperties": false
+								  },
+								  "maxItems": 20,
+								  "uniqueItems": false
+								}
+							  },
+							  "additionalProperties": false
+							},
+							"uniqueItems": false
+						  }
+						},
+						"additionalProperties": false
+					  }
+					},
+					"additionalProperties": false
+				  }
+				},
+				"additionalProperties": false
+			  }
+			},
+			"400": {
+			  "description": "",
+			  "schema": {
+				"type": "object",
+				"required": [
+				  "success",
+				  "error",
+				  "message",
+				  "debug"
+				],
+				"properties": {
+				  "success": {
+					"type": "boolean",
+					"example": false
+				  },
+				  "error": {
+					"type": "string",
+					"example": "Bad Request"
+				  },
+				  "message": {
+					"type": "string",
+					"example": "Value is not allowed to be empty"
+				  },
+				  "debug": {
+					"type": "string",
+					"example": "N/A"
+				  }
+				},
+				"additionalProperties": false
+			  }
+			},
+			"404": {
+			  "description": "",
+			  "schema": {
+				"type": "object",
+				"required": [
+				  "success",
+				  "error",
+				  "message"
+				],
+				"properties": {
+				  "success": {
+					"type": "boolean",
+					"example": false
+				  },
+				  "error": {
+					"type": "string",
+					"example": "Not Found"
+				  },
+				  "message": {
+					"type": "string",
+					"example": "Action not found"
+				  }
+				},
+				"additionalProperties": false
+			  }
+			},
+			"500": {
+			  "description": "",
+			  "schema": {
+				"type": "object",
+				"required": [
+				  "success",
+				  "error",
+				  "message",
+				  "debug"
+				],
+				"properties": {
+				  "success": {
+					"type": "boolean",
+					"example": false
+				  },
+				  "error": {
+					"type": "string",
+					"example": "Bad Gateway"
+				  },
+				  "message": {
+					"type": "string",
+					"example": "Internal server error"
+				  },
+				  "debug": {
+					"type": "string",
+					"example": "N/A"
+				  }
+				},
+				"additionalProperties": false
+			  }
+			}
+		  }
+		}
+	  },
+	  "/client/details": {
+		"post": {
+		  "parameters": [
+			{
+			  "name": "x-encrypted-key",
+			  "in": "header",
+			  "required": true,
+			  "type": "string"
+			},
+			{
+			  "name": "x-encrypted-user",
+			  "in": "header",
+			  "required": true,
+			  "type": "string"
+			},
+			{
+			  "name": "",
+			  "in": "body",
+			  "required": false,
+			  "schema": {
+				"type": "object",
+				"required": [
+				  "action",
+				  "filter_uid"
+				],
+				"properties": {
+				  "action": {
+					"type": "string",
+					"default": "get_client_one"
+				  },
+				  "filter_uid": {
+					"type": "string",
+					"example": "0"
+				  }
+				},
+				"additionalProperties": false
+			  }
+			}
+		  ],
+		  "responses": {
+			"200": {
+			  "description": "",
+			  "schema": {
+				"type": "object",
+				"required": [
+				  "success",
+				  "message",
+				  "data"
+				],
+				"properties": {
+				  "success": {
+					"type": "boolean",
+					"example": true
+				  },
+				  "message": {
+					"type": "string",
+					"example": "Client list dat fetched successfully"
+				  },
+				  "data": {
+					"type": "object",
+					"required": [
+					  "id",
+					  "ic",
+					  "uid",
+					  "branch_id",
+					  "status",
+					  "status_name",
+					  "system_level",
+					  "user_no",
+					  "user_type",
+					  "file_image",
+					  "name",
+					  "phone",
+					  "email",
+					  "category",
+					  "category_name",
+					  "group",
+					  "group_name",
+					  "subgroup",
+					  "subgroup_name",
+					  "is_delete",
+					  "system",
+					  "personal",
+					  "contact",
+					  "address",
+					  "bank_info",
+					  "form_info"
+					],
+					"properties": {
+					  "id": {
+						"type": "string",
+						"example": "1"
+					  },
+					  "ic": {
+						"type": "string",
+						"example": "34567890"
+					  },
+					  "uid": {
+						"type": "string",
+						"example": "C00001"
+					  },
+					  "branch_id": {
+						"type": "integer",
+						"example": 0
+					  },
+					  "status": {
+						"type": "integer",
+						"example": 0
+					  },
+					  "status_name": {
+						"type": "string"
+					  },
+					  "system_level": {
+						"type": "string"
+					  },
+					  "user_no": {
+						"type": "string"
+					  },
+					  "user_type": {
+						"type": "string"
+					  },
+					  "file_image": {
+						"type": "string"
+					  },
+					  "name": {
+						"type": "string",
+						"example": "Jahir"
+					  },
+					  "phone": {
+						"type": "string",
+						"example": "34567890"
+					  },
+					  "email": {
+						"type": "string",
+						"example": "demo@client.com"
+					  },
+					  "category": {
+						"type": "string",
+						"example": "dummy category"
+					  },
+					  "category_name": {
+						"type": "string",
+						"example": "category name"
+					  },
+					  "group": {
+						"type": "string"
+					  },
+					  "group_name": {
+						"type": "string"
+					  },
+					  "subgroup": {
+						"type": "string"
+					  },
+					  "subgroup_name": {
+						"type": "string"
+					  },
+					  "is_delete": {
+						"type": "integer",
+						"example": 0
+					  },
+					  "system": {
+						"type": "object",
+						"properties": {
+						  "create_at": {
+							"type": "string",
+							"example": "2023-12-19"
+						  },
+						  "create_by": {
+							"type": "string"
+						  },
+						  "update_at": {
+							"type": "string",
+							"example": "2024-01-06 12:45:30"
+						  },
+						  "update_by": {
+							"type": "string",
+							"example": "Root"
+						  },
+						  "delete_at": {
+							"type": "string"
+						  },
+						  "delete_by": {
+							"type": "string"
+						  },
+						  "terminated_at": {
+							"type": "string"
+						  }
+						},
+						"additionalProperties": false
+					  },
+					  "personal": {
+						"type": "object",
+						"properties": {
+						  "full_name": {
+							"type": "string",
+							"example": "Mr Abedin"
+						  },
+						  "nick_name": {
+							"type": "string",
+							"example": "Mr Abedin"
+						  },
+						  "gender": {
+							"type": "string",
+							"example": "1"
+						  },
+						  "birth_date": {
+							"type": "string",
+							"example": "1995-09-19"
+						  },
+						  "race": {
+							"type": "string",
+							"example": "Malay"
+						  },
+						  "religion": {
+							"type": "string",
+							"example": "Islam"
+						  },
+						  "primary_phone": {
+							"type": "string",
+							"example": "0123456789"
+						  },
+						  "secondary_phone": {
+							"type": "string",
+							"example": "0123456789"
+						  },
+						  "primary_email": {
+							"type": "string",
+							"example": "demo@email.com"
+						  },
+						  "secondary_email": {
+							"type": "string",
+							"example": "demo2@email.com"
+						  },
+						  "citizen": {
+							"type": "string",
+							"example": "Malaysia"
+						  },
+						  "education": {
+							"type": "string",
+							"example": "phd"
+						  },
+						  "marital": {
+							"type": "string",
+							"example": "married"
+						  },
+						  "job_position": {
+							"type": "string"
+						  },
+						  "job_level": {
+							"type": "string"
+						  }
+						},
+						"additionalProperties": false
+					  },
+					  "contact": {
+						"type": "object",
+						"required": [
+						  "contact2"
+						],
+						"properties": {
+						  "contact2": {
+							"type": "object",
+							"properties": {
+							  "nick_name": {
+								"type": "string",
+								"example": "Abedin"
+							  },
+							  "full_name": {
+								"type": "string",
+								"example": "Abedin"
+							  },
+							  "primary_phone": {
+								"type": "string",
+								"example": "013456789"
+							  },
+							  "primary_email": {
+								"type": "string",
+								"example": "abd@email.com"
+							  },
+							  "citizen": {
+								"type": "string",
+								"example": "Malaysia"
+							  },
+							  "education": {
+								"type": "string",
+								"example": "phd"
+							  },
+							  "race": {
+								"type": "string",
+								"example": "malay"
+							  },
+							  "marital": {
+								"type": "string",
+								"example": "married"
+							  },
+							  "job_position": {
+								"type": "string"
+							  },
+							  "job_level": {
+								"type": "string"
+							  }
+							},
+							"additionalProperties": false
+						  }
+						},
+						"additionalProperties": false
+					  },
+					  "address": {
+						"type": "object",
+						"properties": {
+						  "main": {
+							"type": "object",
+							"required": [
+							  "line1",
+							  "line2",
+							  "city",
+							  "postcode",
+							  "state",
+							  "country",
+							  "district"
+							],
+							"properties": {
+							  "line1": {
+								"type": "string",
+								"example": "1/a dummy line"
+							  },
+							  "line2": {
+								"type": "string",
+								"example": "1/a dummy line"
+							  },
+							  "line3": {
+								"type": "string",
+								"example": "1/a dummy line"
+							  },
+							  "city": {
+								"type": "string",
+								"example": "s jaya"
+							  },
+							  "postcode": {
+								"type": "string",
+								"example": "0000"
+							  },
+							  "state": {
+								"type": "string",
+								"example": "Selangor"
+							  },
+							  "country": {
+								"type": "string",
+								"example": "Malaysia"
+							  },
+							  "district": {
+								"type": "string",
+								"example": "dummy"
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "address2": {
+							"type": "object",
+							"required": [
+							  "line1",
+							  "line2",
+							  "city",
+							  "postcode",
+							  "state",
+							  "country",
+							  "district"
+							],
+							"properties": {
+							  "line1": {
+								"type": "string",
+								"example": "1/a dummy line"
+							  },
+							  "line2": {
+								"type": "string",
+								"example": "1/a dummy line"
+							  },
+							  "line3": {
+								"type": "string",
+								"example": "1/a dummy line"
+							  },
+							  "city": {
+								"type": "string",
+								"example": "s jaya"
+							  },
+							  "postcode": {
+								"type": "string",
+								"example": "0000"
+							  },
+							  "state": {
+								"type": "string",
+								"example": "Selangor"
+							  },
+							  "country": {
+								"type": "string",
+								"example": "Malaysia"
+							  },
+							  "district": {
+								"type": "string",
+								"example": "dummy"
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "address3": {
+							"type": "object",
+							"required": [
+							  "line1",
+							  "line2",
+							  "city",
+							  "postcode",
+							  "state",
+							  "country",
+							  "district"
+							],
+							"properties": {
+							  "line1": {
+								"type": "string",
+								"example": "1/a dummy line"
+							  },
+							  "line2": {
+								"type": "string",
+								"example": "1/a dummy line"
+							  },
+							  "line3": {
+								"type": "string",
+								"example": "1/a dummy line"
+							  },
+							  "city": {
+								"type": "string",
+								"example": "s jaya"
+							  },
+							  "postcode": {
+								"type": "string",
+								"example": "0000"
+							  },
+							  "state": {
+								"type": "string",
+								"example": "Selangor"
+							  },
+							  "country": {
+								"type": "string",
+								"example": "Malaysia"
+							  },
+							  "district": {
+								"type": "string",
+								"example": "dummy"
+							  }
+							},
+							"additionalProperties": false
+						  }
+						},
+						"additionalProperties": false
+					  },
+					  "bank_info": {
+						"type": "object",
+						"required": [
+						  "main",
+						  "bank2",
+						  "bank3"
+						],
+						"properties": {
+						  "main": {
+							"type": "object",
+							"required": [
+							  "bank_name",
+							  "account_number",
+							  "account_name",
+							  "branch_name",
+							  "swift_code"
+							],
+							"properties": {
+							  "bank_name": {
+								"type": "string",
+								"example": "dummy bank"
+							  },
+							  "account_number": {
+								"type": "string",
+								"example": "2345678785678"
+							  },
+							  "account_name": {
+								"type": "string",
+								"example": "dummy name"
+							  },
+							  "branch_name": {
+								"type": "string",
+								"example": "dummy branch"
+							  },
+							  "swift_code": {
+								"type": "string",
+								"example": "4567787"
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "bank2": {
+							"type": "object",
+							"required": [
+							  "bank_name",
+							  "account_number",
+							  "account_name",
+							  "branch_name",
+							  "swift_code"
+							],
+							"properties": {
+							  "bank_name": {
+								"type": "string",
+								"example": "dummy bank"
+							  },
+							  "account_number": {
+								"type": "string",
+								"example": "2345678785678"
+							  },
+							  "account_name": {
+								"type": "string",
+								"example": "dummy name"
+							  },
+							  "branch_name": {
+								"type": "string",
+								"example": "dummy branch"
+							  },
+							  "swift_code": {
+								"type": "string",
+								"example": "4567787"
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "bank3": {
+							"type": "object",
+							"required": [
+							  "bank_name",
+							  "account_number",
+							  "account_name",
+							  "branch_name",
+							  "swift_code"
+							],
+							"properties": {
+							  "bank_name": {
+								"type": "string",
+								"example": "dummy bank"
+							  },
+							  "account_number": {
+								"type": "string",
+								"example": "2345678785678"
+							  },
+							  "account_name": {
+								"type": "string",
+								"example": "dummy name"
+							  },
+							  "branch_name": {
+								"type": "string",
+								"example": "dummy branch"
+							  },
+							  "swift_code": {
+								"type": "string",
+								"example": "4567787"
+							  }
+							},
+							"additionalProperties": false
+						  }
+						},
+						"additionalProperties": false
+					  },
+					  "form_info": {
+						"type": "array",
+						"items": {
+						  "type": "object",
+						  "properties": {
+							"form_name": {
+							  "type": "string",
+							  "example": "client extra option"
+							},
+							"form_data": {
+							  "type": "array",
+							  "items": {
+								"type": "object",
+								"properties": {
+								  "data_id": {
+									"type": "integer",
+									"example": 1
+								  },
+								  "type": {
+									"type": "string"
+								  },
+								  "description": {
+									"type": "string",
+									"example": "text field"
+								  },
+								  "value": {
+									"type": "string"
+								  },
+								  "value_info": {
+									"type": "string"
+								  },
+								  "file_name": {
+									"type": "string"
+								  },
+								  "file_path": {
+									"type": "string"
+								  },
+								  "filter": {
+									"type": "string"
+								  },
+								  "remark": {
+									"type": "string"
+								  }
+								},
+								"additionalProperties": false
+							  },
+							  "maxItems": 20,
+							  "uniqueItems": false
+							}
+						  },
+						  "additionalProperties": false
+						},
+						"uniqueItems": false
+					  }
+					},
+					"additionalProperties": false
+				  }
+				},
+				"additionalProperties": false
+			  }
+			},
+			"400": {
+			  "description": "",
+			  "schema": {
+				"type": "object",
+				"required": [
+				  "success",
+				  "error",
+				  "message",
+				  "debug"
+				],
+				"properties": {
+				  "success": {
+					"type": "boolean",
+					"example": false
+				  },
+				  "error": {
+					"type": "string",
+					"example": "Bad Request"
+				  },
+				  "message": {
+					"type": "string",
+					"example": "Value is not allowed to be empty"
+				  },
+				  "debug": {
+					"type": "string",
+					"example": "N/A"
+				  }
+				},
+				"additionalProperties": false
+			  }
+			},
+			"404": {
+			  "description": "",
+			  "schema": {
+				"type": "object",
+				"required": [
+				  "success",
+				  "error",
+				  "message"
+				],
+				"properties": {
+				  "success": {
+					"type": "boolean",
+					"example": false
+				  },
+				  "error": {
+					"type": "string",
+					"example": "Not Found"
+				  },
+				  "message": {
+					"type": "string",
+					"example": "Action not found"
+				  }
+				},
+				"additionalProperties": false
+			  }
+			},
+			"500": {
+			  "description": "",
+			  "schema": {
+				"type": "object",
+				"required": [
+				  "success",
+				  "error",
+				  "message",
+				  "debug"
+				],
+				"properties": {
+				  "success": {
+					"type": "boolean",
+					"example": false
+				  },
+				  "error": {
+					"type": "string",
+					"example": "Bad Gateway"
+				  },
+				  "message": {
+					"type": "string",
+					"example": "Internal server error"
+				  },
+				  "debug": {
+					"type": "string",
+					"example": "N/A"
+				  }
+				},
+				"additionalProperties": false
+			  }
+			}
+		  }
+		}
+	  },
+	  "/client/create": {
+		"post": {
+		  "description": "API for creating client data.",
+		  "parameters": [
+			{
+			  "name": "x-encrypted-key",
+			  "in": "header",
+			  "required": true,
+			  "type": "string"
+			},
+			{
+			  "name": "x-encrypted-user",
+			  "in": "header",
+			  "required": true,
+			  "type": "string"
+			},
+			{
+			  "name": "",
+			  "in": "body",
+			  "required": true,
+			  "schema": {
+				"type": "object",
+				"required": [
+				  "action",
+				  "data"
+				],
+				"properties": {
+				  "action": {
+					"type": "string",
+					"default": "create_client"
+				  },
+				  "data": {
+					"type": "object",
+					"required": [
+					  "ic",
+					  "branch_id",
+					  "user_type",
+					  "name",
+					  "phone",
+					  "emai",
+					  "category",
+					  "category_name",
+					  "group",
+					  "group_name",
+					  "subgroup",
+					  "subgroup_name",
+					  "status",
+					  "status_name",
+					  "personal",
+					  "contact"
+					],
+					"properties": {
+					  "ic": {
+						"type": "string",
+						"example": "567890"
+					  },
+					  "branch_id": {
+						"type": "integer",
+						"example": 0
+					  },
+					  "user_type": {
+						"type": "integer",
+						"example": 0
+					  },
+					  "name": {
+						"type": "string",
+						"example": "Fazal"
+					  },
+					  "phone": {
+						"type": "string",
+						"example": "45678909"
+					  },
+					  "emai": {
+						"type": "string",
+						"example": "demo@email.com"
+					  },
+					  "category": {
+						"type": "string"
+					  },
+					  "category_name": {
+						"type": "string"
+					  },
+					  "group": {
+						"type": "string"
+					  },
+					  "group_name": {
+						"type": "string"
+					  },
+					  "subgroup": {
+						"type": "string"
+					  },
+					  "subgroup_name": {
+						"type": "string"
+					  },
+					  "status": {
+						"type": "string"
+					  },
+					  "status_name": {
+						"type": "string"
+					  },
+					  "personal": {
+						"type": "object",
+						"properties": {
+						  "full_name": {
+							"type": "string",
+							"example": "Fazal"
+						  },
+						  "nick_name": {
+							"type": "string",
+							"example": "Fazal"
+						  },
+						  "gender": {
+							"type": "string",
+							"example": "male"
+						  },
+						  "birth_date": {
+							"type": "string",
+							"example": "1987-03-07"
+						  },
+						  "race": {
+							"type": "string",
+							"example": "malay"
+						  },
+						  "religion": {
+							"type": "string",
+							"example": "Islam"
+						  },
+						  "primary_phone": {
+							"type": "string",
+							"example": "016789056"
+						  },
+						  "secondary_phone": {
+							"type": "string",
+							"example": "016789056"
+						  },
+						  "primary_email": {
+							"type": "string",
+							"example": "demo@email.com"
+						  },
+						  "secondary_email": {
+							"type": "string",
+							"example": "demo2@email.com"
+						  },
+						  "citizen": {
+							"type": "string",
+							"example": "Malaysia"
+						  },
+						  "education": {
+							"type": "string",
+							"example": "phd"
+						  },
+						  "marital": {
+							"type": "string",
+							"example": "merried"
+						  }
+						},
+						"additionalProperties": false
+					  },
+					  "contact": {
+						"type": "object",
+						"properties": {
+						  "contact2": {
+							"type": "object",
+							"properties": {
+							  "nick_name": {
+								"type": "string",
+								"example": "Raza"
+							  },
+							  "full_name": {
+								"type": "string",
+								"example": "Razali"
+							  },
+							  "primary_Phone": {
+								"type": "string",
+								"example": "01456789"
+							  },
+							  "primary_email": {
+								"type": "string",
+								"example": "dummy@email.com"
+							  },
+							  "citizen": {
+								"type": "string",
+								"example": "Malaysia"
+							  },
+							  "education": {
+								"type": "string",
+								"example": "HSC"
+							  },
+							  "marital": {
+								"type": "string",
+								"example": "married"
+							  },
+							  "race": {
+								"type": "string",
+								"example": "Malay"
+							  }
+							},
+							"additionalProperties": false
+						  }
+						},
+						"additionalProperties": false
+					  }
+					},
+					"additionalProperties": false
+				  }
+				},
+				"additionalProperties": false
+			  }
+			}
+		  ],
+		  "responses": {}
+		}
+	  }
+	}
+  }
+  

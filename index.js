@@ -1,14 +1,48 @@
 // create express app
 const express = require('express');
 const app = express();
+const router = express.Router();
+
 
 // initialize swagger-UI
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json'); // Your Swagger definition
+const swaggerDocument = require('./staff.json'); // Your Swagger definition
+const swaggerAwfa = require('./client.json')
 
 const j2s = require('joi-to-swagger');
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// Create a single middleware function using an object literal
+const swaggerMiddleware = {
+  '/client': {
+    serve: swaggerUi.serve,
+    setup: (req, res, next) => swaggerUi.setup(swaggerAwfa)(req, res, next),
+  },
+  '/staff': {
+    serve: swaggerUi.serve,
+    setup: (req, res, next) => swaggerUi.setup(swaggerDocument)(req, res, next),
+  },
+  setup: (req, res, next) => {
+    next(); // Pass control to the next middleware if the path doesn't match
+  },
+};
+
+// Apply Swagger UI middleware based on path
+for (const path in swaggerMiddleware) {
+  if (path !== 'setup') {
+    app.use(path, swaggerMiddleware[path].serve, swaggerMiddleware[path].setup);
+  }
+}
+
+// Your other middleware or route handlers go here
+
+
+
+
+
+
+
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerAwfa));
+// app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Create API endpoints using Express routes.
 // Define Joi schemas for request validation:
@@ -28,9 +62,12 @@ const validate = (data, schema) => {
 };
 
 app.get('/', (req, res) => {
+  // if (req.path === '/app-docs') {
+  //   app.use(swaggerUi.serve, swaggerUi.setup(swaggerAwfa));
+  // }
+  console.log(req.path)
     // Get users logic...
     res.json({ message: 'server running' });
-
 });
 
 app.post('/users', async (req, res) => {
