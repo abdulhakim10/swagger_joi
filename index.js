@@ -10,6 +10,7 @@ const swaggerUi = require('swagger-ui-express');
 const staff = require('./staff.json'); // Your Swagger definition
 const client = require('./client.json');
 const alumni = require('./alumni.json');
+const supplier = require('./supplier.json');
 
 const j2s = require('joi-to-swagger');
 
@@ -26,6 +27,10 @@ const swaggerMiddleware = {
   '/alumni': {
     serve: swaggerUi.serve,
     setup: (req, res, next) => swaggerUi.setup(alumni)(req, res, next),
+  },
+  '/supplier': {
+    serve: swaggerUi.serve,
+    setup: (req, res, next) => swaggerUi.setup(supplier)(req, res, next),
   },
   setup: (req, res, next) => {
     next(); // Pass control to the next middleware if the path doesn't match

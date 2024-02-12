@@ -1,0 +1,930 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "Supplier API Documentation.",
+      "version": ""
+    },
+    "servers": [
+        {
+            "url": "http://localhost:10000",
+            "description": "Local server"
+          },
+          {
+            "url": "https://devapi01.awfatech.com",
+            "description": "Development server"
+          },
+          {
+            "url": "https://api01.awfatech.com",
+            "description": "Production server" 
+        }
+    ],
+    "paths": {
+      "/supplier/list": {
+        "post": {
+          "description": "This API for fetching supplier list data.\n",
+          "parameters": [
+            {
+              "name": "x-encrypted-key",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "x-encrypted-user",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "action",
+                    "filter_branch_id",
+                    "page_limit"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "default": "get_suppier_list"
+                    },
+                    "filter_branch_id": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "filer_delete": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "filter_search": {
+                      "type": "string",
+                      "example": "Razali"
+                    },
+                    "page_limit": {
+                      "type": "integer",
+                      "example": 40
+                    },
+                    "page_start": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "page_sort": {
+                      "type": "string",
+                      "example": "desc"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": false
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "data",
+                      "message",
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "supplier list data fetched successfully"
+                      },
+                      "data": {
+                        "type": "object",
+                        "additionalProperties": false
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Bad Request"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "value is not allowed to be empty."
+                      },
+                      "debug": {
+                        "type": "string",
+                        "example": "N/A"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Not Found"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Action not found"
+                      },
+                      "debug": {
+                        "type": "string",
+                        "example": "N/A"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Bad Gateway"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Internal server error"
+                      },
+                      "debug": {
+                        "type": "string",
+                        "example": "N/A"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          },
+          "x-codegen-request-body-name": ""
+        }
+      },
+      "/supplier/details": {
+        "post": {
+          "description": "This API for fetching supplier data based on uid.\n",
+          "parameters": [
+            {
+              "name": "x-encrypted-key",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "x-encrypted-user",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "action",
+                    "filter_uid"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "default": "get_supplier_one"
+                    },
+                    "filter_uid": {
+                      "type": "string",
+                      "example": "A0003",
+                      "default": "get_supplier_one"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": false
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "message",
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "supplier data fetched successfully"
+                      },
+                      "data": {
+                        "type": "object",
+                        "additionalProperties": false
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Bad Request"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "value is not allowed to be empty."
+                      },
+                      "debug": {
+                        "type": "string",
+                        "example": "N/A"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Not Found"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Action not found"
+                      },
+                      "debug": {
+                        "type": "string",
+                        "example": "N/A"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Bad Gateway"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Internal server error"
+                      },
+                      "debug": {
+                        "type": "string",
+                        "example": "N/A"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          },
+          "x-codegen-request-body-name": ""
+        }
+      },
+      "/supplier/create": {
+        "post": {
+          "parameters": [
+            {
+              "name": "xx-encrypted-key",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "xx-encrypted-user",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "action"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "default": "create_supplier"
+                    },
+                    "data": {
+                      "type": "object",
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": false
+          },
+          "responses": {
+            "201": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "data",
+                      "message",
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "supplier data created successfully"
+                      },
+                      "data": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Bad Request"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "value is not allowed to be empty."
+                      },
+                      "debug": {
+                        "type": "string",
+                        "example": "N/A"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Not Found"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Action not found"
+                      },
+                      "debug": {
+                        "type": "string",
+                        "example": "N/A"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Bad Gateway"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Internal server error"
+                      },
+                      "debug": {
+                        "type": "string",
+                        "example": "N/A"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          },
+          "x-codegen-request-body-name": ""
+        }
+      },
+      "/supplier/update": {
+        "post": {
+          "description": "API for updating supplier data based on uid.",
+          "parameters": [
+            {
+              "name": "xx-encrypted-key",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "xx-encrypted-user",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "action",
+                    "filter_uid"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "default": "update_supplier"
+                    },
+                    "filter_uid": {
+                      "type": "string",
+                      "example": "A0003"
+                    },
+                    "data": {
+                      "type": "object",
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": false
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "data",
+                      "message",
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "supplier data updated successfully"
+                      },
+                      "data": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Bad Request"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "value is not allowed to be empty."
+                      },
+                      "debug": {
+                        "type": "string",
+                        "example": "N/A"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Not Found"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Action not found"
+                      },
+                      "debug": {
+                        "type": "string",
+                        "example": "N/A"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Bad Gateway"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Internal server error"
+                      },
+                      "debug": {
+                        "type": "string",
+                        "example": "N/A"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          },
+          "x-codegen-request-body-name": ""
+        }
+      },
+      "/supplier/delete": {
+        "post": {
+          "description": "API for deleting supplier data based on uid.",
+          "parameters": [
+            {
+              "name": "xx-encrypted-key",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "xx-encrypted-user",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "action",
+                    "filter_uid"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "default": "delete_supplier"
+                    },
+                    "filter_uid": {
+                      "type": "string",
+                      "example": "A0003"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": false
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "data",
+                      "message",
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "supplier data deleted successfully"
+                      },
+                      "data": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Bad Request"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "value is not allowed to be empty."
+                      },
+                      "debug": {
+                        "type": "string",
+                        "example": "N/A"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Not Found"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Action not found"
+                      },
+                      "debug": {
+                        "type": "string",
+                        "example": "N/A"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "required": [
+                      "success"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "success": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "error": {
+                        "type": "string",
+                        "example": "Bad Gateway"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Internal server error"
+                      },
+                      "debug": {
+                        "type": "string",
+                        "example": "N/A"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          },
+          "x-codegen-request-body-name": ""
+        }
+      }
+    },
+    "components": {},
+    "x-original-swagger-version": "2.0"
+  }

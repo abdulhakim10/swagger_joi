@@ -1,97 +1,949 @@
 {
-    "openapi": "3.0.1",
-    "info": {
-      "title": "Alumni API Documentation",
-      "version": ""
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Alumni API Documentation.",
+    "version": ""
+  },
+  "servers": [
+    {
+      "url": "http://localhost:10000",
+      "description": "Local server"
     },
-    "servers": [
-        {
-            "url": "http://localhost:10000",
-            "description": "Local server"
+    {
+      "url": "https://devapi01.awfatech.com",
+      "description": "Development server"
+    },
+    {
+      "url": "https://api01.awfatech.com",
+      "description": "Production server" 
+  }
+  ],
+  "paths": {
+    "/alumni/list": {
+      "post": {
+        "description": "This API for creating alumni data.",
+        "parameters": [
+          {
+            "name": "x-encrypted-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           },
           {
-            "url": "https://devapi01.awfatech.com",
-            "description": "Development server"
-          },
-          {
-            "url": "https://api01.awfatech.com",
-            "description": "Production server" 
-        }
-    ],
-    "paths": {
-      "/alumni/create": {
-        "post": {
-          "parameters": [
-            {
-              "name": "x-encrypted-key",
-              "in": "header",
-              "required": true,
+            "name": "x-encrypted-user",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
               "schema": {
-                "type": "string"
-              }
-            },
-            {
-              "name": "x-encrypted-user",
-              "in": "header",
-              "required": true,
-              "schema": {
-                "type": "string"
+                "required": [
+                  "action",
+                  "filter_branch_id",
+                  "page_limit",
+                  "page_order",
+                  "page_sort",
+                  "page_start"
+                ],
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "default": "get_alumni_list"
+                  },
+                  "filter_branch_id": {
+                    "type": "string",
+                    "example": "0"
+                  },
+                  "page_limit": {
+                    "type": "integer"
+                  },
+                  "filter_delete": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "filter_search": {
+                    "type": "string",
+                    "example": "Razali"
+                  },
+                  "page_start": {
+                    "type": "integer"
+                  },
+                  "page_order": {
+                    "type": "string",
+                    "example": "0"
+                  },
+                  "page_sort": {
+                    "type": "string",
+                    "example": "desc"
+                  }
+                },
+                "additionalProperties": false
               }
             }
-          ],
-          "requestBody": {
-            "description": "dsfsdfsdf",
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
             "content": {
               "*/*": {
                 "schema": {
+                  "required": [
+                    "message",
+                    "success"
+                  ],
                   "type": "object",
                   "properties": {
-                    "action": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
                       "type": "string",
-                      "default": "create_alumni"
+                      "example": "alumni list data fetched successfully"
                     },
                     "data": {
                       "type": "object",
                       "additionalProperties": false
                     }
                   },
-                  "additionalProperties": false,
-                  "description": "dsfsdfsdf"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "200": {
-              "description": "",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "success": {
-                        "type": "boolean",
-                        "example": true
-                      },
-                      "message": {
-                        "type": "string",
-                        "example": "alumni data created successfully"
-                      },
-                      "data": {
-                        "type": "string"
-                      }
-                    },
-                    "additionalProperties": false
-                  }
+                  "additionalProperties": false
                 }
               }
             }
           },
-          "x-codegen-request-body-name": ""
-        }
+          "400": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "seccess"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "seccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "seccess"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "seccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action not found"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": ""
       }
     },
-    "components": {},
-    "x-original-swagger-version": "2.0"
-  }
+    "/alumni/update": {
+      "post": {
+        "description": "This end point updates alumni data based on uid. To update a specific form category there must provide form_type: value and that category's fields in the payload. And the form_type values are ('personal', 'address', 'job', 'spm', 'others', 'bachelor', 'masters', 'degree', 'phd').",
+        "parameters": [
+          {
+            "name": "x-encrypted-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-encrypted-user",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "dsfsdfsdf",
+          "content": {
+            "*/*": {
+              "schema": {
+                "required": [
+                  "action",
+                  "filter_uid",
+                  "form_type"
+                ],
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "default": "update_alumni"
+                  },
+                  "filter_uid": {
+                    "type": "string",
+                    "example": "A0003"
+                  },
+                  "form_type": {
+                    "type": "string",
+                    "example": "personal"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false,
+                "description": "dsfsdfsdf"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "alumni data updated successfully"
+                    },
+                    "data": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action not found"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": ""
+      }
+    },
+    "/alumni/create": {
+      "post": {
+        "description": "This API create alumni data.",
+        "parameters": [
+          {
+            "name": "x-encrypted-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-encrypted-user",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "dsfsdfsdf",
+          "content": {
+            "*/*": {
+              "schema": {
+                "required": [
+                  "action"
+                ],
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "default": "create_alumni"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false,
+                "description": "dsfsdfsdf"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "alumni data created successfully"
+                    },
+                    "data": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action not found"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": ""
+      }
+    },
+    "/alumni/details": {
+      "post": {
+        "description": "This API retrieves alumni data based on uid.",
+        "parameters": [
+          {
+            "name": "x-encrypted-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-encrypted-user",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "required": [
+                  "action",
+                  "filter_uid"
+                ],
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "default": "get_alumni_one"
+                  },
+                  "filter_uid": {
+                    "type": "string",
+                    "example": "A0003"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "data(1)",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "alumni data fetched successfully"
+                    },
+                    "data(1)": {
+                      "type": "object",
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "seccess"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "seccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "seccess"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "seccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action not found"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": ""
+      }
+    },
+    "/alumni/delete": {
+      "post": {
+        "description": "This end point updates alumni data based on uid. To update a specific form category there must provide form_type: value and that category's fields in the payload. And the form_type values are ('personal', 'address', 'job', 'spm', 'others', 'bachelor', 'masters', 'degree', 'phd').",
+        "parameters": [
+          {
+            "name": "x-encrypted-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-encrypted-user",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "dsfsdfsdf",
+          "content": {
+            "*/*": {
+              "schema": {
+                "required": [
+                  "action",
+                  "filter_uid"
+                ],
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "default": "delete_alumni"
+                  },
+                  "filter_uid": {
+                    "type": "string",
+                    "example": "A0003"
+                  }
+                },
+                "additionalProperties": false,
+                "description": "dsfsdfsdf"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "alumni data deleted successfully"
+                    },
+                    "data": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action not found"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": ""
+      }
+    }
+  },
+  "components": {},
+  "x-original-swagger-version": "2.0"
+}
