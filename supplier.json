@@ -573,7 +573,7 @@
           "x-order": 2
         }
       },
-      "/supplier/list": {
+      "/api/v2/crm/{app}/{user}/supplier-list": {
         "post": {
           "description": "This API for fetching supplier list data.\n",
           "parameters": [
@@ -594,6 +594,14 @@
               }
             }
           ],
+          "tags": [
+            "supplier"
+            ],
+            "security": [
+            {
+              "bearerAuth": []
+            }
+            ],
           "requestBody": {
             "content": {
               "*/*": {
@@ -1137,9 +1145,9 @@
           "x-codegen-request-body-name": ""
         }
       },
-      "/supplier/details": {
+      "/api/v2/crm/{app}/{user}/supplier-detail": {
         "post": {
-          "description": "This API for fetching supplier data based on uid.\n",
+          "description": "This API for fetching supplier data based on uid.",
           "parameters": [
             {
               "name": "x-encrypted-key",
@@ -1158,6 +1166,14 @@
               }
             }
           ],
+          "tags": [
+            "supplier"
+            ],
+            "security": [
+            {
+              "bearerAuth": []
+            }
+            ],
           "requestBody": {
             "content": {
               "*/*": {
@@ -1652,7 +1668,7 @@
           "x-codegen-request-body-name": ""
         }
       },
-      "/supplier/create": {
+      "/api/v2/crm/{app}/{user}/supplier-create": {
         "post": {
           "parameters": [
             {
@@ -1672,6 +1688,14 @@
               }
             }
           ],
+          "tags": [
+            "supplier"
+            ],
+            "security": [
+            {
+              "bearerAuth": []
+            }
+            ],
           "requestBody": {
             "content": {
               "*/*": {
@@ -2146,7 +2170,7 @@
           "x-codegen-request-body-name": ""
         }
       },
-      "/supplier/update": {
+      "/api/v2/crm/{app}/{user}/supplier-update": {
         "post": {
           "description": "API for updating supplier data based on uid.",
           "parameters": [
@@ -2167,6 +2191,14 @@
               }
             }
           ],
+          "tags": [
+            "supplier"
+            ],
+            "security": [
+            {
+              "bearerAuth": []
+            }
+            ],
           "requestBody": {
             "content": {
               "*/*": {
@@ -2646,7 +2678,7 @@
           "x-codegen-request-body-name": ""
         }
       },
-      "/supplier/delete": {
+      "/api/v2/crm/{app}/{user}/supplier-delete": {
         "post": {
           "description": "API for deleting supplier data based on uid.",
           "parameters": [
@@ -2667,6 +2699,14 @@
               }
             }
           ],
+          "tags": [
+            "supplier"
+            ],
+            "security": [
+            {
+              "bearerAuth": []
+            }
+            ],
           "requestBody": {
             "content": {
               "*/*": {
