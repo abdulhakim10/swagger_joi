@@ -2,12 +2,13 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const cors = require('cors');
 
-
+app.use(cors());
 
 // initialize swagger-UI
 const swaggerUi = require('swagger-ui-express');
-const staff = require('./staff.json'); // Your Swagger definition
+const staff = require('./staff.json'); 
 const client = require('./client.json');
 const alumni = require('./alumni.json');
 const supplier = require('./supplier.json');
@@ -65,24 +66,11 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// app.post('/users', async (req, res) => {
-//   const { error } = await validate(req.body, userSchema);
-//   if (error) {
-//     return res.status(400).json({ error: error.details[0].message })
-//   }
-//   else {
-//     // Create user logic...
-//     res.status(201).json({ message: 'User created successfully' });
-//   }
-
-// });
-
-
 // Use joi-to-swagger to convert Joi schemas to Swagger definitions
 const swaggerUserSchema = j2s(userSchema).swagger;
 
 // Start the server
-const PORT = 3000;
+const PORT = 3300;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

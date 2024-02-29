@@ -5,10 +5,6 @@
 	  "version": ""
 	},
 	"servers": [
-		{
-			"url": "http://localhost:10000",
-			"description": "Local server"
-		  },
 		  {
 			"url": "https://devapi01.awfatech.com",
 			"description": "Development server"
@@ -18,7 +14,565 @@
 			"description": "Production server" 
 		}
 	],
+	"components": {
+		"securitySchemes": {
+		  "bearerAuth": {
+			"type": "apiKey",
+			"name": "Authorization",
+			"in": "header",
+			"description": "Enter the token",
+			"bearerFormat": "JWT"
+		  }
+		}
+	  },
 	"paths": {
+		"/api/v2/auth/appcode": {
+			"post": {
+			  "summary": "Getting the user's right server id by appcode given",
+			  "operationId": "postApiV2AuthAppcode",
+			  "description": "Getting server_id value from this api and use that to retrive data from others api",
+			  "tags": [
+				"auth"
+			  ],
+			  "requestBody": {
+				"content": {
+				  "application/json": {
+					"schema": {
+					  "required": [
+						"appcode"
+					  ],
+					  "type": "object",
+					  "properties": {
+						"appcode": {
+						  "type": "string"
+						}
+					  },
+					  "additionalProperties": false
+					}
+				  }
+				},
+				"required": false
+			  },
+			  "responses": {
+				"200": {
+				  "description": "Success",
+				  "content": {
+					"application/json": {
+					  "schema": {
+						"type": "object",
+						"properties": {
+						  "success": {
+							"type": "boolean"
+						  },
+						  "message": {
+							"type": "string"
+						  },
+						  "data": {
+							"type": "object",
+							"properties": {
+							  "encrypted_key": {
+								"type": "string",
+								"example": "Here will be a encrypted key token"
+							  },
+							  "server_id": {
+								"type": "string",
+								"example": "1693883178"
+							  },
+							  "sid": {
+								"type": "string",
+								"example": "0"
+							  },
+							  "client_appname": {
+								"type": "string",
+								"example": "EBOSS"
+							  },
+							  "client_appengine": {
+								"type": "string",
+								"example": ""
+							  },
+							  "client_tel": {
+								"type": "string",
+								"example": "0192134562"
+							  },
+							  "client_regno": {
+								"type": "string",
+								"example": "CT0077167-P"
+							  },
+							  "client_address": {
+								"type": "string",
+								"example": "80"
+							  },
+							  "client_postcode": {
+								"type": "string",
+								"example": "30010"
+							  },
+							  "client_district": {
+								"type": "string",
+								"example": ""
+							  },
+							  "client_state": {
+								"type": "string",
+								"example": "Perak"
+							  },
+							  "customer": {
+								"type": "string",
+								"example": "TEST EBOSS"
+							  },
+							  "client_logo": {
+								"type": "string",
+								"example": "https://eboss.awfatech.com/bos0070/content/logo/aauto.png"
+							  },
+							  "app_config": {
+								"type": "string",
+								"example": "ALERT|ATTSTAFF|CLIENTWALLET|OUTING|CALENDAR|"
+							  },
+							  "url": {
+								"type": "string",
+								"example": "https://eboss.awfatech.com/bos0070"
+							  }
+							}
+						  }
+						}
+					  }
+					}
+				  }
+				},
+				"400": {
+				  "description": "",
+				  "content": {
+					"application/json": {
+					  "schema": {
+						"required": [
+						  "debug",
+						  "error",
+						  "message",
+						  "seccess"
+						],
+						"type": "object",
+						"properties": {
+						  "seccess": {
+							"type": "boolean",
+							"example": false
+						  },
+						  "error": {
+							"type": "string",
+							"example": "Bad Request"
+						  },
+						  "message": {
+							"type": "string",
+							"example": "Value is not allowed to be empty"
+						  },
+						  "debug": {
+							"type": "string",
+							"example": "N/A"
+						  }
+						},
+						"additionalProperties": false
+					  }
+					}
+				  }
+				},
+				"401": {
+				  "description": "Unauthorized",
+				  "content": {
+					"application/json": {
+					  "schema": {
+						"type": "object",
+						"properties": {
+						  "success": {
+							"type": "boolean",
+							"example": false
+						  },
+						  "error": {
+							"type": "string",
+							"example": "Unauthorized"
+						  },
+						  "message": {
+							"type": "string",
+							"example": "Missing authentication"
+						  },
+						  "debug": {
+							"type": "string",
+							"example": "N/A"
+						  }
+						}
+					  }
+					}
+				  }
+				},
+				"404": {
+				  "description": "",
+				  "content": {
+					"application/json": {
+					  "schema": {
+						"required": [
+						  "seccess"
+						],
+						"type": "object",
+						"properties": {
+						  "seccess": {
+							"type": "boolean",
+							"example": false
+						  },
+						  "error": {
+							"type": "string",
+							"example": "Not Found"
+						  },
+						  "message": {
+							"type": "string",
+							"example": "Action not found"
+						  },
+						  "debug": {
+							"type": "string",
+							"example": "N/A"
+						  }
+						},
+						"additionalProperties": false
+					  }
+					}
+				  }
+				},
+				"500": {
+				  "description": "",
+				  "content": {
+					"application/json": {
+					  "schema": {
+						"required": [
+						  "success"
+						],
+						"type": "object",
+						"properties": {
+						  "success": {
+							"type": "boolean",
+							"example": false
+						  },
+						  "error": {
+							"type": "string",
+							"example": "Bad Gateway"
+						  },
+						  "message": {
+							"type": "string",
+							"example": "Internal server error"
+						  },
+						  "debug": {
+							"type": "string",
+							"example": "N/A"
+						  }
+						},
+						"additionalProperties": false
+					  }
+					}
+				  }
+				}
+			  },
+			  "x-order": 1
+			}
+		  },
+		  "/api/v2/auth/{app}/{user}/login": {
+			"post": {
+			  "summary": "Login user",
+			  "operationId": "postApiV2AuthAppUserLogin",
+			  "description": "Getting user credentials and token to access locked api | notes: platform_code : [1:android 2:ios 3:web]",
+			  "parameters": [
+				{
+				  "name": "x-encrypted-key",
+				  "in": "header",
+				  "schema": {
+					"type": "string"
+				  }
+				},
+				{
+				  "name": "app",
+				  "in": "path",
+				  "schema": {
+					"type": "string",
+					"enum": [
+					  "eboss",
+					  "asis",
+					  "sbd",
+					  "pos",
+					  "lms",
+					  "careline",
+					  "alumni"
+					]
+				  },
+				  "required": true
+				},
+				{
+				  "name": "user",
+				  "in": "path",
+				  "schema": {
+					"type": "string"
+				  },
+				  "required": true
+				}
+			  ],
+			  "tags": [
+				"auth"
+			  ],
+			  "security": [
+				{
+				  "encrypted_key": []
+				}
+			  ],
+			  "requestBody": {
+				"content": {
+				  "application/json": {
+					"schema": {
+					  "type": "object",
+					  "properties": {
+						"app_version": {
+						  "type": "string",
+						  "example": "1.0.0"
+						},
+						"username": {
+						  "type": "string",
+						  "example": "testuser"
+						},
+						"password": {
+						  "type": "string",
+						  "example": "12345"
+						},
+						"login_type": {
+						  "type": "string",
+						  "example": "normal"
+						},
+						"firebase_id": {
+						  "type": "string",
+						  "example": "hello"
+						},
+						"platform_code": {
+						  "type": "integer",
+						  "example": 1
+						}
+					  }
+					}
+				  }
+				}
+			  },
+			  "responses": {
+				"200": {
+				  "description": "Success",
+				  "content": {
+					"application/json": {
+					  "schema": {
+						"type": "object",
+						"properties": {
+						  "success": {
+							"type": "boolean"
+						  },
+						  "message": {
+							"type": "string"
+						  },
+						  "data": {
+							"type": "object",
+							"properties": {
+							  "token": {
+								"type": "string",
+								"example": "Here will be a authorization token"
+							  },
+							  "encrypted_user": {
+								"type": "string",
+								"example": "Here will be a encrypted user token"
+							  },
+							  "server_id": {
+								"type": "string"
+							  },
+							  "user_id": {
+								"type": "string",
+								"example": "AAP017"
+							  },
+							  "user_sid": {
+								"type": "number",
+								"example": 1
+							  },
+							  "user_name": {
+								"type": "string",
+								"example": "MOHAMAD FIRDAUS BIN MOHAMAD SUKRI"
+							  },
+							  "user_image": {
+								"type": "string"
+							  },
+							  "user_phone_num": {
+								"type": "string",
+								"example": "0192660251"
+							  },
+							  "user_ic": {
+								"type": "string",
+								"example": "910901025743"
+							  },
+							  "user_email": {
+								"type": "string",
+								"example": "mohamadfirdaus1991@gmail.com"
+							  },
+							  "user_addr": {
+								"type": "string"
+							  },
+							  "sch_name": {
+								"type": "string",
+								"example": "TEST EBOSS"
+							  },
+							  "sch_addr": {
+								"type": "string",
+								"example": "80"
+							  },
+							  "sch_coordinate": {
+								"type": "string",
+								"example": "4.630973484589474,101.09618872404099"
+							  },
+							  "sch_radius": {
+								"type": "string"
+							  },
+							  "system_access": {
+								"type": "string"
+							  },
+							  "system_config": {
+								"type": "string",
+								"enum": [
+									"ALERT|ATTSTAFF|CLIENTWALLET|OUTING|CALENDAR|"
+								]
+							},
+							  "bos_config": {
+								"type": "string"
+							  }
+							}
+						  }
+						}
+					  }
+					}
+				  }
+				},
+				"400": {
+				  "description": "",
+				  "content": {
+					"application/json": {
+					  "schema": {
+						"required": [
+						  "debug",
+						  "error",
+						  "message",
+						  "seccess"
+						],
+						"type": "object",
+						"properties": {
+						  "seccess": {
+							"type": "boolean",
+							"example": false
+						  },
+						  "error": {
+							"type": "string",
+							"example": "Bad Request"
+						  },
+						  "message": {
+							"type": "string",
+							"example": "Value is not allowed to be empty"
+						  },
+						  "debug": {
+							"type": "string",
+							"example": "N/A"
+						  }
+						},
+						"additionalProperties": false
+					  }
+					}
+				  }
+				},
+				"401": {
+				  "description": "Unauthorized",
+				  "content": {
+					"application/json": {
+					  "schema": {
+						"type": "object",
+						"properties": {
+						  "success": {
+							"type": "boolean",
+							"example": false
+						  },
+						  "error": {
+							"type": "string",
+							"example": "Unauthorized"
+						  },
+						  "message": {
+							"type": "string",
+							"example": "Missing authentication"
+						  },
+						  "debug": {
+							"type": "string",
+							"example": "N/A"
+						  }
+						}
+					  }
+					}
+				  }
+				},
+				"404": {
+				  "description": "",
+				  "content": {
+					"application/json": {
+					  "schema": {
+						"required": [
+						  "seccess"
+						],
+						"type": "object",
+						"properties": {
+						  "seccess": {
+							"type": "boolean",
+							"example": false
+						  },
+						  "error": {
+							"type": "string",
+							"example": "Not Found"
+						  },
+						  "message": {
+							"type": "string",
+							"example": "Action not found"
+						  },
+						  "debug": {
+							"type": "string",
+							"example": "N/A"
+						  }
+						},
+						"additionalProperties": false
+					  }
+					}
+				  }
+				},
+				"500": {
+				  "description": "",
+				  "content": {
+					"application/json": {
+					  "schema": {
+						"required": [
+						  "success"
+						],
+						"type": "object",
+						"properties": {
+						  "success": {
+							"type": "boolean",
+							"example": false
+						  },
+						  "error": {
+							"type": "string",
+							"example": "Bad Gateway"
+						  },
+						  "message": {
+							"type": "string",
+							"example": "Internal server error"
+						  },
+						  "debug": {
+							"type": "string",
+							"example": "N/A"
+						  }
+						},
+						"additionalProperties": false
+					  }
+					}
+				  }
+				}
+			  },
+			  "x-order": 2
+			}
+		  },
 	  "/client/list": {
 		"post": {
 		  "description": "API for fetching and searching client data list",
@@ -88,35 +642,455 @@
 		  },
 		  "responses": {
 			"200": {
-			  "description": "",
-			  "content": {
-				"*/*": {
-				  "schema": {
-					"required": [
-					  "data",
-					  "message",
-					  "success"
-					],
-					"type": "object",
-					"properties": {
-					  "success": {
-						"type": "boolean",
-						"example": true
+				"description": "",
+				"content": {
+				  "*/*": {
+					"schema": {
+					  "required": [
+						"data",
+						"message",
+						"success"
+					  ],
+					  "type": "object",
+					  "properties": {
+						"success": {
+						  "type": "boolean",
+						  "example": true
+						},
+						"message": {
+						  "type": "string",
+						  "example": "client list data fetched successfully"
+						},
+						"data": {
+							"type": "object",
+							"required": [
+							  "total_count",
+							  "total_data",
+							  "data"
+							],
+							"properties": {
+							  "total_count": {
+								"type": "integer",
+								"example": 20
+							  },
+							  "total_data": {
+								"type": "integer",
+								"example": 20
+							  },
+							  "data": {
+								"type": "object",
+								"required": [
+								  "id",
+								  "ic",
+								  "uid",
+								  "branch_id",
+								  "status",
+								  "status_name",
+								  "system_level",
+								  "user_no",
+								  "user_type",
+								  "file_image",
+								  "name",
+								  "phone",
+								  "email",
+								  "category",
+								  "category_name",
+								  "group",
+								  "group_name",
+								  "subgroup",
+								  "subgroup_name",
+								  "is_delete",
+								  "system",
+								  "personal",
+								  "contact",
+								  "address",
+								  "bank_info",
+								  "form_info"
+								],
+								"properties": {
+								  "_id": {
+									"type": "string",
+									"example": "1"
+								  },
+								  "id": {
+									"type": "string",
+									"example": ""
+								  },
+								  "ic": {
+									"type": "string",
+									"example": "34567890"
+								  },
+								  "uid": {
+									"type": "string",
+									"example": "C00001"
+								  },
+								  "branch_id": {
+									"type": "integer",
+									"example": 0
+								  },
+								  "app_code": {
+									  "type": "string"
+								  },
+								  "status": {
+									"type": "integer",
+									"example": 0
+								  },
+								  "status_name": {
+									"type": "string"
+								  },
+								  "system_level": {
+									"type": "string"
+								  },
+								  "user_no": {
+									"type": "string"
+								  },
+								  "user_type": {
+									"type": "string",
+									"example": "CLIENT"
+								  },
+								  "file_image": {
+									"type": "string"
+								  },
+								  "name": {
+									"type": "string",
+									"example": "Jahir"
+								  },
+								  "phone": {
+									"type": "string",
+									"example": "34567890"
+								  },
+								  "email": {
+									"type": "string",
+									"example": "demo@client.com"
+								  },
+								  "category": {
+									"type": "string",
+									"example": "dummy category"
+								  },
+								  "category_name": {
+									"type": "string",
+									"example": "category name"
+								  },
+								  "group": {
+									"type": "string"
+								  },
+								  "group_name": {
+									"type": "string"
+								  },
+								  "subgroup": {
+									"type": "string"
+								  },
+								  "subgroup_name": {
+									"type": "string"
+								  },
+								  "is_delete": {
+									"type": "integer",
+									"example": 0
+								  },
+								  "system": {
+									"type": "object",
+									"properties": {
+									  "create_at": {
+										"type": "string",
+										"example": "2023-12-19"
+									  },
+									  "create_by": {
+										"type": "string"
+									  },
+									  "update_at": {
+										"type": "string",
+										"example": "2024-01-06 12:45:30"
+									  },
+									  "update_by": {
+										"type": "string",
+										"example": "Root"
+									  },
+									  "delete_at": {
+										"type": "string"
+									  },
+									  "delete_by": {
+										"type": "string"
+									  },
+									  "terminated_at": {
+										"type": "string"
+									  },
+									  "module": {
+										  "type": "string"
+									  },
+									  "user_level": {
+										  "type": "string"
+									  }
+									},
+									"additionalProperties": false
+								  },
+								  "personal": {
+									"type": "object",
+									"properties": {
+									  "full_name": {
+										"type": "string",
+										"example": "Mr Abedin"
+									  },
+									  
+									  "gender": {
+										"type": "string",
+										"example": "1"
+									  },
+									  "birth_date": {
+										"type": "string",
+										"example": "1995-09-19"
+									  },
+									  "race": {
+										"type": "string",
+										"example": "Malay"
+									  },
+									  "religion": {
+										"type": "string",
+										"example": "Islam"
+									  },
+									  "primary_phone": {
+										"type": "string",
+										"example": "0123456789"
+									  },
+									  "secondary_phone": {
+										"type": "string",
+										"example": "0123456789"
+									  },
+									  "primary_email": {
+										"type": "string",
+										"example": "demo@email.com"
+									  },
+									  "secondary_email": {
+										"type": "string",
+										"example": "demo2@email.com"
+									  },
+									  
+									  "file_profile": {
+										"type": "string"
+									  },
+									  "file_profile_url": {
+										"type": "string"
+									  },
+									  "file_profile_path": {
+										"type": "string"
+									  }
+									},
+									"additionalProperties": false
+								  },
+								  "contact": {
+									"type": "object",
+									"required": [
+									  "contact2"
+									],
+									"properties": {
+									  "contact2": {
+										"type": "object",
+										"properties": {
+										  
+										  "full_name": {
+											"type": "string",
+											"example": "Abedin"
+										  },
+										  "gender": {
+											  "type": "string",
+											  "example": "1"
+											},
+											"birth_date": {
+											  "type": "string",
+											  "example": "1995-09-19"
+											},
+										  "primary_phone": {
+											"type": "string",
+											"example": "013456789"
+										  },
+										  "primary_email": {
+											"type": "string",
+											"example": "abd@email.com"
+										  },
+									  
+										  "religion": {
+											"type": "string"
+										  },
+										  "file_profile": {
+											  "type": "string"
+											},
+											"file_profile_url": {
+											  "type": "string"
+											},
+											"file_profile_path": {
+											  "type": "string"
+											}
+										},
+										"additionalProperties": false
+									  }
+									},
+									"additionalProperties": false
+								  },
+								  "address": {
+									"type": "object",
+									"properties": {
+									  "main": {
+										"type": "object",
+										"required": [
+										  "line1",
+										  "line2",
+										  "city",
+										  "postcode",
+										  "state",
+										  "country",
+										  "district"
+										],
+										"properties": {
+										  "line1": {
+											"type": "string",
+											"example": "1/a dummy line"
+										  },
+										  "line2": {
+											"type": "string",
+											"example": "1/a dummy line"
+										  },
+										  "line3": {
+											"type": "string",
+											"example": "1/a dummy line"
+										  },
+										  "city": {
+											"type": "string",
+											"example": "s jaya"
+										  },
+										  "postcode": {
+											"type": "string",
+											"example": "0000"
+										  },
+										  "state": {
+											"type": "string",
+											"example": "Selangor"
+										  },
+										  "country": {
+											"type": "string",
+											"example": "Malaysia"
+										  },
+										  "district": {
+											"type": "string",
+											"example": "dummy"
+										  }
+										},
+										"additionalProperties": false
+									  }
+									},
+									"additionalProperties": false
+								  },
+								  "bank_info": {
+									"type": "object",
+									"required": [
+									  "main",
+									  "bank2",
+									  "bank3"
+									],
+									"properties": {
+									  "_id":{
+										  "type": "string"
+									  },
+									  "uid":{
+										  "type": "string"
+									  },
+									  "main": {
+										"type": "object",
+										"required": [
+										  "bank_name",
+										  "account_number",
+										  "account_name",
+										  "branch_name",
+										  "swift_code"
+										],
+										"properties": {
+										  "bank_name": {
+											"type": "string",
+											"example": "dummy bank"
+										  },
+										  "account_number": {
+											"type": "string",
+											"example": "2345678785678"
+										  },
+										  "account_name": {
+											"type": "string",
+											"example": "dummy name"
+										  },
+										  "branch_name": {
+											"type": "string",
+											"example": "dummy branch"
+										  }
+										},
+										"additionalProperties": false
+									  }
+									  
+									},
+									"additionalProperties": false
+								  },
+								  "form_info": {
+									"type": "array",
+									"items": {
+									  "type": "object",
+									  "properties": {
+										"form_name": {
+										  "type": "string",
+										  "example": "client extra option"
+										},
+										"form_data": {
+										  "type": "array",
+										  "items": {
+											"type": "object",
+											"properties": {
+											  "data_id": {
+												"type": "integer",
+												"example": 1
+											  },
+											  "type": {
+												"type": "string"
+											  },
+											  "description": {
+												"type": "string",
+												"example": "text field"
+											  },
+											  "value": {
+												"type": "string"
+											  },
+											  "value_info": {
+												"type": "string"
+											  },
+											  "file_name": {
+												"type": "string"
+											  },
+											  "file_path": {
+												"type": "string"
+											  },
+											  "filter": {
+												"type": "string"
+											  },
+											  "remark": {
+												"type": "string"
+											  }
+											},
+											"additionalProperties": false
+										  },
+										  "maxItems": 20,
+										  "uniqueItems": false
+										}
+									  },
+									  "additionalProperties": false
+									},
+									"uniqueItems": false
+								  }
+								},
+								"additionalProperties": false
+							  }
+							},
+							"additionalProperties": false
+						  }
 					  },
-					  "message": {
-						"type": "string",
-						"example": "Client list dat fetched successfully"
-					  },
-					  "data": {
-						"type": "object",
-						"additionalProperties": false
-					  }
-					},
-					"additionalProperties": false
+					  "additionalProperties": false
+					}
 				  }
 				}
-			  }
-			},
+			  },
 			"400": {
 			  "description": "",
 			  "content": {
@@ -285,10 +1259,411 @@
 					  },
 					  "message": {
 						"type": "string",
-						"example": "Client list dat fetched successfully"
+						"example": "Client data fetched successfully"
 					  },
 					  "data": {
 						"type": "object",
+						"required": [
+						  "id",
+						  "ic",
+						  "uid",
+						  "branch_id",
+						  "status",
+						  "status_name",
+						  "system_level",
+						  "user_no",
+						  "user_type",
+						  "file_image",
+						  "name",
+						  "phone",
+						  "email",
+						  "category",
+						  "category_name",
+						  "group",
+						  "group_name",
+						  "subgroup",
+						  "subgroup_name",
+						  "is_delete",
+						  "system",
+						  "personal",
+						  "contact",
+						  "address",
+						  "bank_info",
+						  "form_info"
+						],
+						"properties": {
+						  "_id": {
+							"type": "string",
+							"example": "1"
+						  },
+						  "id": {
+							"type": "string",
+							"example": ""
+						  },
+						  "ic": {
+							"type": "string",
+							"example": "34567890"
+						  },
+						  "uid": {
+							"type": "string",
+							"example": "C00001"
+						  },
+						  "branch_id": {
+							"type": "integer",
+							"example": 0
+						  },
+						  "app_code": {
+							  "type": "string"
+						  },
+						  "status": {
+							"type": "integer",
+							"example": 0
+						  },
+						  "status_name": {
+							"type": "string"
+						  },
+						  "system_level": {
+							"type": "string"
+						  },
+						  "user_no": {
+							"type": "string"
+						  },
+						  "user_type": {
+							"type": "string",
+							"example": "CLIENT"
+						  },
+						  "file_image": {
+							"type": "string"
+						  },
+						  "name": {
+							"type": "string",
+							"example": "Jahir"
+						  },
+						  "phone": {
+							"type": "string",
+							"example": "34567890"
+						  },
+						  "email": {
+							"type": "string",
+							"example": "demo@client.com"
+						  },
+						  "category": {
+							"type": "string",
+							"example": "dummy category"
+						  },
+						  "category_name": {
+							"type": "string",
+							"example": "category name"
+						  },
+						  "group": {
+							"type": "string"
+						  },
+						  "group_name": {
+							"type": "string"
+						  },
+						  "subgroup": {
+							"type": "string"
+						  },
+						  "subgroup_name": {
+							"type": "string"
+						  },
+						  "is_delete": {
+							"type": "integer",
+							"example": 0
+						  },
+						  "system": {
+							"type": "object",
+							"properties": {
+							  "create_at": {
+								"type": "string",
+								"example": "2023-12-19"
+							  },
+							  "create_by": {
+								"type": "string"
+							  },
+							  "update_at": {
+								"type": "string",
+								"example": "2024-01-06 12:45:30"
+							  },
+							  "update_by": {
+								"type": "string",
+								"example": "Root"
+							  },
+							  "delete_at": {
+								"type": "string"
+							  },
+							  "delete_by": {
+								"type": "string"
+							  },
+							  "terminated_at": {
+								"type": "string"
+							  },
+							  "module": {
+								  "type": "string"
+							  },
+							  "user_level": {
+								  "type": "string"
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "personal": {
+							"type": "object",
+							"properties": {
+							  "full_name": {
+								"type": "string",
+								"example": "Mr Abedin"
+							  },
+							  
+							  "gender": {
+								"type": "string",
+								"example": "1"
+							  },
+							  "birth_date": {
+								"type": "string",
+								"example": "1995-09-19"
+							  },
+							  "race": {
+								"type": "string",
+								"example": "Malay"
+							  },
+							  "religion": {
+								"type": "string",
+								"example": "Islam"
+							  },
+							  "primary_phone": {
+								"type": "string",
+								"example": "0123456789"
+							  },
+							  "secondary_phone": {
+								"type": "string",
+								"example": "0123456789"
+							  },
+							  "primary_email": {
+								"type": "string",
+								"example": "demo@email.com"
+							  },
+							  "secondary_email": {
+								"type": "string",
+								"example": "demo2@email.com"
+							  },
+							  
+							  "file_profile": {
+								"type": "string"
+							  },
+							  "file_profile_url": {
+								"type": "string"
+							  },
+							  "file_profile_path": {
+								"type": "string"
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "contact": {
+							"type": "object",
+							"required": [
+							  "contact2"
+							],
+							"properties": {
+							  "contact2": {
+								"type": "object",
+								"properties": {
+								  
+								  "full_name": {
+									"type": "string",
+									"example": "Abedin"
+								  },
+								  "gender": {
+									  "type": "string",
+									  "example": "1"
+									},
+									"birth_date": {
+									  "type": "string",
+									  "example": "1995-09-19"
+									},
+								  "primary_phone": {
+									"type": "string",
+									"example": "013456789"
+								  },
+								  "primary_email": {
+									"type": "string",
+									"example": "abd@email.com"
+								  },
+							  
+								  "religion": {
+									"type": "string"
+								  },
+								  "file_profile": {
+									  "type": "string"
+									},
+									"file_profile_url": {
+									  "type": "string"
+									},
+									"file_profile_path": {
+									  "type": "string"
+									}
+								},
+								"additionalProperties": false
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "address": {
+							"type": "object",
+							"properties": {
+							  "main": {
+								"type": "object",
+								"required": [
+								  "line1",
+								  "line2",
+								  "city",
+								  "postcode",
+								  "state",
+								  "country",
+								  "district"
+								],
+								"properties": {
+								  "line1": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "line2": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "line3": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "city": {
+									"type": "string",
+									"example": "s jaya"
+								  },
+								  "postcode": {
+									"type": "string",
+									"example": "0000"
+								  },
+								  "state": {
+									"type": "string",
+									"example": "Selangor"
+								  },
+								  "country": {
+									"type": "string",
+									"example": "Malaysia"
+								  },
+								  "district": {
+									"type": "string",
+									"example": "dummy"
+								  }
+								},
+								"additionalProperties": false
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "bank_info": {
+							"type": "object",
+							"required": [
+							  "main",
+							  "bank2",
+							  "bank3"
+							],
+							"properties": {
+							  "_id":{
+								  "type": "string"
+							  },
+							  "uid":{
+								  "type": "string"
+							  },
+							  "main": {
+								"type": "object",
+								"required": [
+								  "bank_name",
+								  "account_number",
+								  "account_name",
+								  "branch_name",
+								  "swift_code"
+								],
+								"properties": {
+								  "bank_name": {
+									"type": "string",
+									"example": "dummy bank"
+								  },
+								  "account_number": {
+									"type": "string",
+									"example": "2345678785678"
+								  },
+								  "account_name": {
+									"type": "string",
+									"example": "dummy name"
+								  },
+								  "branch_name": {
+									"type": "string",
+									"example": "dummy branch"
+								  }
+								},
+								"additionalProperties": false
+							  }
+							  
+							},
+							"additionalProperties": false
+						  },
+						  "form_info": {
+							"type": "array",
+							"items": {
+							  "type": "object",
+							  "properties": {
+								"form_name": {
+								  "type": "string",
+								  "example": "client extra option"
+								},
+								"form_data": {
+								  "type": "array",
+								  "items": {
+									"type": "object",
+									"properties": {
+									  "data_id": {
+										"type": "integer",
+										"example": 1
+									  },
+									  "type": {
+										"type": "string"
+									  },
+									  "description": {
+										"type": "string",
+										"example": "text field"
+									  },
+									  "value": {
+										"type": "string"
+									  },
+									  "value_info": {
+										"type": "string"
+									  },
+									  "file_name": {
+										"type": "string"
+									  },
+									  "file_path": {
+										"type": "string"
+									  },
+									  "filter": {
+										"type": "string"
+									  },
+									  "remark": {
+										"type": "string"
+									  }
+									},
+									"additionalProperties": false
+								  },
+								  "maxItems": 20,
+								  "uniqueItems": false
+								}
+							  },
+							  "additionalProperties": false
+							},
+							"uniqueItems": false
+						  }
+						},
 						"additionalProperties": false
 					  }
 					},
@@ -437,9 +1812,353 @@
 					  "default": "create_client"
 					},
 					"data": {
-					  "type": "object",
-					  "additionalProperties": false
-					}
+						"type": "object",
+						"required": [
+						  "id",
+						  "ic",
+						  "uid",
+						  "branch_id",
+						  "status",
+						  "status_name",
+						  "system_level",
+						  "user_no",
+						  "user_type",
+						  "file_image",
+						  "name",
+						  "phone",
+						  "email",
+						  "category",
+						  "category_name",
+						  "group",
+						  "group_name",
+						  "subgroup",
+						  "subgroup_name",
+						  "is_delete",
+						  "system",
+						  "personal",
+						  "contact",
+						  "address",
+						  "bank_info",
+						  "form_info"
+						],
+						"properties": {
+						 
+						  "ic": {
+							"type": "string",
+							"example": "34567890"
+						  },
+						  "uid": {
+							"type": "string",
+							"example": "C00001"
+						  },
+						  "branch_id": {
+							"type": "integer",
+							"example": 0
+						  },
+						  
+						  "status": {
+							"type": "integer",
+							"example": 0
+						  },
+						  "status_name": {
+							"type": "string"
+						  },
+						  
+						 
+						 
+						  "name": {
+							"type": "string",
+							"example": "Jahir"
+						  },
+						  "phone": {
+							"type": "string",
+							"example": "34567890"
+						  },
+						  
+						  "category": {
+							"type": "string",
+							"example": "dummy category"
+						  },
+						  "category_name": {
+							"type": "string",
+							"example": "category name"
+						  },
+						  "group": {
+							"type": "string"
+						  },
+						  "group_name": {
+							"type": "string"
+						  },
+						  "subgroup": {
+							"type": "string"
+						  },
+						  "subgroup_name": {
+							"type": "string"
+						  },
+						  "is_delete": {
+							"type": "integer",
+							"example": 0
+						  },
+						 
+						  "personal": {
+							"type": "object",
+							"properties": {
+							  "full_name": {
+								"type": "string",
+								"example": "Mr Abedin"
+							  },
+							  
+							  "gender": {
+								"type": "string",
+								"example": "1"
+							  },
+							  "birth_date": {
+								"type": "string",
+								"example": "1995-09-19"
+							  },
+							  "race": {
+								"type": "string",
+								"example": "Malay"
+							  },
+							  "religion": {
+								"type": "string",
+								"example": "Islam"
+							  },
+							  "primary_phone": {
+								"type": "string",
+								"example": "0123456789"
+							  },
+							  "secondary_phone": {
+								"type": "string",
+								"example": "0123456789"
+							  },
+							  "primary_email": {
+								"type": "string",
+								"example": "demo@email.com"
+							  },
+							  "secondary_email": {
+								"type": "string",
+								"example": "demo2@email.com"
+							  },
+							  
+							  "file_profile": {
+								"type": "string"
+							  },
+							  "file_profile_url": {
+								"type": "string"
+							  },
+							  "file_profile_path": {
+								"type": "string"
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "contact": {
+							"type": "object",
+							"required": [
+							  "contact2"
+							],
+							"properties": {
+							  "contact2": {
+								"type": "object",
+								"properties": {
+								  
+								  "full_name": {
+									"type": "string",
+									"example": "Abedin"
+								  },
+								  "gender": {
+									  "type": "string",
+									  "example": "1"
+									},
+									"birth_date": {
+									  "type": "string",
+									  "example": "1995-09-19"
+									},
+								  "primary_phone": {
+									"type": "string",
+									"example": "013456789"
+								  },
+								  "primary_email": {
+									"type": "string",
+									"example": "abd@email.com"
+								  },
+							  
+								  "religion": {
+									"type": "string"
+								  },
+								  "file_profile": {
+									  "type": "string"
+									},
+									"file_profile_url": {
+									  "type": "string"
+									},
+									"file_profile_path": {
+									  "type": "string"
+									}
+								},
+								"additionalProperties": false
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "address": {
+							"type": "object",
+							"properties": {
+							  "main": {
+								"type": "object",
+								"required": [
+								  "line1",
+								  "line2",
+								  "city",
+								  "postcode",
+								  "state",
+								  "country",
+								  "district"
+								],
+								"properties": {
+								  "line1": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "line2": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "line3": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "city": {
+									"type": "string",
+									"example": "s jaya"
+								  },
+								  "postcode": {
+									"type": "string",
+									"example": "0000"
+								  },
+								  "state": {
+									"type": "string",
+									"example": "Selangor"
+								  },
+								  "country": {
+									"type": "string",
+									"example": "Malaysia"
+								  },
+								  "district": {
+									"type": "string",
+									"example": "dummy"
+								  }
+								},
+								"additionalProperties": false
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "bank_info": {
+							"type": "object",
+							"required": [
+							  "main",
+							  "bank2",
+							  "bank3"
+							],
+							"properties": {
+							  "_id":{
+								  "type": "string"
+							  },
+							  "uid":{
+								  "type": "string"
+							  },
+							  "main": {
+								"type": "object",
+								"required": [
+								  "bank_name",
+								  "account_number",
+								  "account_name",
+								  "branch_name",
+								  "swift_code"
+								],
+								"properties": {
+								  "bank_name": {
+									"type": "string",
+									"example": "dummy bank"
+								  },
+								  "account_number": {
+									"type": "string",
+									"example": "2345678785678"
+								  },
+								  "account_name": {
+									"type": "string",
+									"example": "dummy name"
+								  },
+								  "branch_name": {
+									"type": "string",
+									"example": "dummy branch"
+								  }
+								},
+								"additionalProperties": false
+							  }
+							  
+							},
+							"additionalProperties": false
+						  },
+						  "form_info": {
+							"type": "array",
+							"items": {
+							  "type": "object",
+							  "properties": {
+								"form_name": {
+								  "type": "string",
+								  "example": "client extra option"
+								},
+								"form_data": {
+								  "type": "array",
+								  "items": {
+									"type": "object",
+									"properties": {
+									  "data_id": {
+										"type": "integer",
+										"example": 1
+									  },
+									  "type": {
+										"type": "string"
+									  },
+									  "description": {
+										"type": "string",
+										"example": "text field"
+									  },
+									  "value": {
+										"type": "string"
+									  },
+									  "value_info": {
+										"type": "string"
+									  },
+									  "file_name": {
+										"type": "string"
+									  },
+									  "file_path": {
+										"type": "string"
+									  },
+									  "filter": {
+										"type": "string"
+									  },
+									  "remark": {
+										"type": "string"
+									  }
+									},
+									"additionalProperties": false
+								  },
+								  "maxItems": 20,
+								  "uniqueItems": false
+								}
+							  },
+							  "additionalProperties": false
+							},
+							"uniqueItems": false
+						  }
+						},
+						"additionalProperties": false
+					  }
 				  },
 				  "additionalProperties": false
 				}
@@ -622,9 +2341,353 @@
 					  "example": "A0003"
 					},
 					"data": {
-					  "type": "object",
-					  "additionalProperties": false
-					}
+						"type": "object",
+						"required": [
+						  "id",
+						  "ic",
+						  "uid",
+						  "branch_id",
+						  "status",
+						  "status_name",
+						  "system_level",
+						  "user_no",
+						  "user_type",
+						  "file_image",
+						  "name",
+						  "phone",
+						  "email",
+						  "category",
+						  "category_name",
+						  "group",
+						  "group_name",
+						  "subgroup",
+						  "subgroup_name",
+						  "is_delete",
+						  "system",
+						  "personal",
+						  "contact",
+						  "address",
+						  "bank_info",
+						  "form_info"
+						],
+						"properties": {
+						 
+						  "ic": {
+							"type": "string",
+							"example": "34567890"
+						  },
+						  "uid": {
+							"type": "string",
+							"example": "C00001"
+						  },
+						  "branch_id": {
+							"type": "integer",
+							"example": 0
+						  },
+						  
+						  "status": {
+							"type": "integer",
+							"example": 0
+						  },
+						  "status_name": {
+							"type": "string"
+						  },
+						  
+						 
+						 
+						  "name": {
+							"type": "string",
+							"example": "Jahir"
+						  },
+						  "phone": {
+							"type": "string",
+							"example": "34567890"
+						  },
+						  
+						  "category": {
+							"type": "string",
+							"example": "dummy category"
+						  },
+						  "category_name": {
+							"type": "string",
+							"example": "category name"
+						  },
+						  "group": {
+							"type": "string"
+						  },
+						  "group_name": {
+							"type": "string"
+						  },
+						  "subgroup": {
+							"type": "string"
+						  },
+						  "subgroup_name": {
+							"type": "string"
+						  },
+						  "is_delete": {
+							"type": "integer",
+							"example": 0
+						  },
+						 
+						  "personal": {
+							"type": "object",
+							"properties": {
+							  "full_name": {
+								"type": "string",
+								"example": "Mr Abedin"
+							  },
+							  
+							  "gender": {
+								"type": "string",
+								"example": "1"
+							  },
+							  "birth_date": {
+								"type": "string",
+								"example": "1995-09-19"
+							  },
+							  "race": {
+								"type": "string",
+								"example": "Malay"
+							  },
+							  "religion": {
+								"type": "string",
+								"example": "Islam"
+							  },
+							  "primary_phone": {
+								"type": "string",
+								"example": "0123456789"
+							  },
+							  "secondary_phone": {
+								"type": "string",
+								"example": "0123456789"
+							  },
+							  "primary_email": {
+								"type": "string",
+								"example": "demo@email.com"
+							  },
+							  "secondary_email": {
+								"type": "string",
+								"example": "demo2@email.com"
+							  },
+							  
+							  "file_profile": {
+								"type": "string"
+							  },
+							  "file_profile_url": {
+								"type": "string"
+							  },
+							  "file_profile_path": {
+								"type": "string"
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "contact": {
+							"type": "object",
+							"required": [
+							  "contact2"
+							],
+							"properties": {
+							  "contact2": {
+								"type": "object",
+								"properties": {
+								  
+								  "full_name": {
+									"type": "string",
+									"example": "Abedin"
+								  },
+								  "gender": {
+									  "type": "string",
+									  "example": "1"
+									},
+									"birth_date": {
+									  "type": "string",
+									  "example": "1995-09-19"
+									},
+								  "primary_phone": {
+									"type": "string",
+									"example": "013456789"
+								  },
+								  "primary_email": {
+									"type": "string",
+									"example": "abd@email.com"
+								  },
+							  
+								  "religion": {
+									"type": "string"
+								  },
+								  "file_profile": {
+									  "type": "string"
+									},
+									"file_profile_url": {
+									  "type": "string"
+									},
+									"file_profile_path": {
+									  "type": "string"
+									}
+								},
+								"additionalProperties": false
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "address": {
+							"type": "object",
+							"properties": {
+							  "main": {
+								"type": "object",
+								"required": [
+								  "line1",
+								  "line2",
+								  "city",
+								  "postcode",
+								  "state",
+								  "country",
+								  "district"
+								],
+								"properties": {
+								  "line1": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "line2": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "line3": {
+									"type": "string",
+									"example": "1/a dummy line"
+								  },
+								  "city": {
+									"type": "string",
+									"example": "s jaya"
+								  },
+								  "postcode": {
+									"type": "string",
+									"example": "0000"
+								  },
+								  "state": {
+									"type": "string",
+									"example": "Selangor"
+								  },
+								  "country": {
+									"type": "string",
+									"example": "Malaysia"
+								  },
+								  "district": {
+									"type": "string",
+									"example": "dummy"
+								  }
+								},
+								"additionalProperties": false
+							  }
+							},
+							"additionalProperties": false
+						  },
+						  "bank_info": {
+							"type": "object",
+							"required": [
+							  "main",
+							  "bank2",
+							  "bank3"
+							],
+							"properties": {
+							  "_id":{
+								  "type": "string"
+							  },
+							  "uid":{
+								  "type": "string"
+							  },
+							  "main": {
+								"type": "object",
+								"required": [
+								  "bank_name",
+								  "account_number",
+								  "account_name",
+								  "branch_name",
+								  "swift_code"
+								],
+								"properties": {
+								  "bank_name": {
+									"type": "string",
+									"example": "dummy bank"
+								  },
+								  "account_number": {
+									"type": "string",
+									"example": "2345678785678"
+								  },
+								  "account_name": {
+									"type": "string",
+									"example": "dummy name"
+								  },
+								  "branch_name": {
+									"type": "string",
+									"example": "dummy branch"
+								  }
+								},
+								"additionalProperties": false
+							  }
+							  
+							},
+							"additionalProperties": false
+						  },
+						  "form_info": {
+							"type": "array",
+							"items": {
+							  "type": "object",
+							  "properties": {
+								"form_name": {
+								  "type": "string",
+								  "example": "client extra option"
+								},
+								"form_data": {
+								  "type": "array",
+								  "items": {
+									"type": "object",
+									"properties": {
+									  "data_id": {
+										"type": "integer",
+										"example": 1
+									  },
+									  "type": {
+										"type": "string"
+									  },
+									  "description": {
+										"type": "string",
+										"example": "text field"
+									  },
+									  "value": {
+										"type": "string"
+									  },
+									  "value_info": {
+										"type": "string"
+									  },
+									  "file_name": {
+										"type": "string"
+									  },
+									  "file_path": {
+										"type": "string"
+									  },
+									  "filter": {
+										"type": "string"
+									  },
+									  "remark": {
+										"type": "string"
+									  }
+									},
+									"additionalProperties": false
+								  },
+								  "maxItems": 20,
+								  "uniqueItems": false
+								}
+							  },
+							  "additionalProperties": false
+							},
+							"uniqueItems": false
+						  }
+						},
+						"additionalProperties": false
+					  }
 				  },
 				  "additionalProperties": false
 				}
@@ -947,6 +3010,5 @@
 		}
 	  }
 	},
-	"components": {},
 	"x-original-swagger-version": "2.0"
   }

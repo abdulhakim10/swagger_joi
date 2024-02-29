@@ -6,20 +6,574 @@
   },
   "servers": [
     {
-      "url": "http://localhost:10000",
-      "description": "Local server"
-    },
-    {
       "url": "https://devapi01.awfatech.com",
       "description": "Development server"
     },
     {
       "url": "https://api01.awfatech.com",
-      "description": "Production server" 
-  }
+      "description": "Production server"
+    }
   ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "Enter the token",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
   "paths": {
-    "/api/v1/mshr/staff.php": {
+    "/api/v2/auth/appcode": {
+      "post": {
+        "summary": "Getting the user's right server id by appcode given",
+        "operationId": "postApiV2AuthAppcode",
+        "description": "Getting server_id value from this api and use that to retrive data from others api",
+        "tags": [
+          "auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "appcode"
+                ],
+                "type": "object",
+                "properties": {
+                  "appcode": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "encrypted_key": {
+                          "type": "string",
+                          "example": "Here will be a encrypted key token"
+                        },
+                        "server_id": {
+                          "type": "string",
+                          "example": "1693883178"
+                        },
+                        "sid": {
+                          "type": "string",
+                          "example": "0"
+                        },
+                        "client_appname": {
+                          "type": "string",
+                          "example": "EBOSS"
+                        },
+                        "client_appengine": {
+                          "type": "string",
+                          "example": ""
+                        },
+                        "client_tel": {
+                          "type": "string",
+                          "example": "0192134562"
+                        },
+                        "client_regno": {
+                          "type": "string",
+                          "example": "CT0077167-P"
+                        },
+                        "client_address": {
+                          "type": "string",
+                          "example": "80"
+                        },
+                        "client_postcode": {
+                          "type": "string",
+                          "example": "30010"
+                        },
+                        "client_district": {
+                          "type": "string",
+                          "example": ""
+                        },
+                        "client_state": {
+                          "type": "string",
+                          "example": "Perak"
+                        },
+                        "customer": {
+                          "type": "string",
+                          "example": "TEST EBOSS"
+                        },
+                        "client_logo": {
+                          "type": "string",
+                          "example": "https://eboss.awfatech.com/bos0070/content/logo/aauto.png"
+                        },
+                        "app_config": {
+                          "type": "string",
+                          "example": "ALERT|ATTSTAFF|CLIENTWALLET|OUTING|CALENDAR|"
+                        },
+                        "url": {
+                          "type": "string",
+                          "example": "https://eboss.awfatech.com/bos0070"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "seccess"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "seccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Missing authentication"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "seccess"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "seccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action not found"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-order": 1
+      }
+    },
+    "/api/v2/auth/{app}/{user}/login": {
+      "post": {
+        "summary": "Login user",
+        "operationId": "postApiV2AuthAppUserLogin",
+        "description": "Getting user credentials and token to access locked api | notes: platform_code : [1:android 2:ios 3:web]",
+        "parameters": [
+          {
+            "name": "x-encrypted-key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "app",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "eboss",
+                "asis",
+                "sbd",
+                "pos",
+                "lms",
+                "careline",
+                "alumni"
+              ]
+            },
+            "required": true
+          },
+          {
+            "name": "user",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "encrypted_key": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "app_version": {
+                    "type": "string",
+                    "example": "1.0.0"
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "testuser"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "12345"
+                  },
+                  "login_type": {
+                    "type": "string",
+                    "example": "normal"
+                  },
+                  "firebase_id": {
+                    "type": "string",
+                    "example": "hello"
+                  },
+                  "platform_code": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "example": "Here will be a authorization token"
+                        },
+                        "encrypted_user": {
+                          "type": "string",
+                          "example": "Here will be a encrypted user token"
+                        },
+                        "server_id": {
+                          "type": "string"
+                        },
+                        "user_id": {
+                          "type": "string",
+                          "example": "AAP017"
+                        },
+                        "user_sid": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "user_name": {
+                          "type": "string",
+                          "example": "MOHAMAD FIRDAUS BIN MOHAMAD SUKRI"
+                        },
+                        "user_image": {
+                          "type": "string"
+                        },
+                        "user_phone_num": {
+                          "type": "string",
+                          "example": "0192660251"
+                        },
+                        "user_ic": {
+                          "type": "string",
+                          "example": "910901025743"
+                        },
+                        "user_email": {
+                          "type": "string",
+                          "example": "mohamadfirdaus1991@gmail.com"
+                        },
+                        "user_addr": {
+                          "type": "string"
+                        },
+                        "sch_name": {
+                          "type": "string",
+                          "example": "TEST EBOSS"
+                        },
+                        "sch_addr": {
+                          "type": "string",
+                          "example": "80"
+                        },
+                        "sch_coordinate": {
+                          "type": "string",
+                          "example": "4.630973484589474,101.09618872404099"
+                        },
+                        "sch_radius": {
+                          "type": "string"
+                        },
+                        "system_access": {
+                          "type": "string"
+                        },
+                        "system_config": {
+                          "type": "string",
+                          "enum": [
+                              "ALERT|ATTSTAFF|CLIENTWALLET|OUTING|CALENDAR|"
+                          ]
+                      },
+                        "bos_config": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "seccess"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "seccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Missing authentication"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "seccess"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "seccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action not found"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-order": 2
+      }
+    },
+    "/api/v2/staff/{app}/{user}/list": {
       "post": {
         "description": "API for fetching and searching staff data list.",
         "parameters": [
@@ -40,9 +594,17 @@
             }
           }
         ],
+        "tags": [
+          "staff"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "required": [
                   "filter_branch_id",
@@ -68,15 +630,19 @@
                   },
                   "page_limit": {
                     "type": "integer",
-                    "example": 40
+                    "example": 10
                   },
                   "page_start": {
                     "type": "integer",
                     "example": 1
                   },
+                  "page_order": {
+                    "type": "string",
+                    "example": "id"
+                  },
                   "page_sort": {
                     "type": "string",
-                    "example": "desc"
+                    "example": "asc"
                   }
                 },
                 "additionalProperties": false
@@ -89,7 +655,7 @@
           "200": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "data",
@@ -108,6 +674,427 @@
                     },
                     "data": {
                       "type": "object",
+                      "required": [
+                        "total_count",
+                        "total_data",
+                        "data"
+                      ],
+                      "properties": {
+                        "total_count": {
+                          "type": "string",
+                          "example": "20"
+                        },
+                        "total_data": {
+                          "type": "string",
+                          "example": "10"
+                        },
+                        "data": {
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "ic",
+                            "uid",
+                            "branch_id",
+                            "status",
+                            "status_name",
+                            "system_level",
+                            "user_type",
+                            "file_image",
+                            "name",
+                            "phone",
+                            "email",
+                            "subgroup",
+                            "subgroup_name",
+                            "is_delete",
+                            "system",
+                            "personal",
+                            "address",
+                            "family",
+                            "bank",
+                            "job",
+                            "education",
+                            "work_experience"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 48
+                            },
+                            "ic": {
+                              "type": "string",
+                              "example": "093485023"
+                            },
+                            "uid": {
+                              "type": "string",
+                              "example": "A00E4"
+                            },
+                            "branch_id": {
+                              "type": "integer"
+                            },
+                            "status": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "status_name": {
+                              "type": "string"
+                            },
+                            "system_level": {
+                              "type": "string",
+                              "example": "ADMIN"
+                            },
+                            "user_type": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Razali"
+                            },
+                            "phone": {
+                              "type": "string",
+                              "example": "892340934"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "demo@awfatech.com"
+                            },
+                            "is_delete": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "system": {
+                              "type": "object",
+                              "required": [
+                                "update_at",
+                                "update_by",
+                                "delete_at",
+                                "delete_by"
+                              ],
+                              "properties": {
+                                "created_at": {
+                                  "type": "string",
+                                  "example": "2023-12-31 23:59:59"
+                                },
+                                "created_by": {
+                                  "type": "string",
+                                  "example": "2023-12-31 23:59:59"
+                                },
+                                "update_at": {
+                                  "type": "string",
+                                  "example": "2024-01-03 09:47:08"
+                                },
+                                "update_by": {
+                                  "type": "string",
+                                  "example": "Root"
+                                },
+                                "delete_at": {
+                                  "type": "string"
+                                },
+                                "delete_by": {
+                                  "type": "string"
+                                },
+                                "module": {
+                                  "type": "string",
+                                  "example": "staff"
+                                },
+                                "user_level": {
+                                  "type": "string"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "personal": {
+                              "type": "object",
+                              "properties": {
+                                "full_name": {
+                                  "type": "string",
+                                  "example": "Mr Razali"
+                                },
+                                "nick_name": {
+                                  "type": "string",
+                                  "example": "Raza"
+                                },
+                                "primary_phone": {
+                                  "type": "string",
+                                  "example": "013678980"
+                                },
+                                "primary_email": {
+                                  "type": "string",
+                                  "example": "demo@email.com"
+                                },
+                                "birth_date": {
+                                  "type": "string",
+                                  "example": "1985-09-19"
+                                },
+                                "race": {
+                                  "type": "string",
+                                  "example": "Malay"
+                                },
+                                "gender": {
+                                  "type": "string",
+                                  "example": "Male"
+                                },
+                                "religion": {
+                                  "type": "string",
+                                  "example": "Islam"
+                                },
+                                " citizen": {
+                                  "type": "string",
+                                  "example": "Albania"
+                                },
+                                "education": {
+                                  "type": "string",
+                                  "example": "SPM"
+                                },
+                                "file_profile_path": {
+                                  "type": "string"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "address": {
+                              "type": "object",
+                              "required": [
+                                "main",
+                                "address2",
+                                "address3"
+                              ],
+                              "properties": {
+                                "main": {
+                                  "type": "object",
+                                  "properties": {
+                                    "line1": {
+                                      "type": "string",
+                                      "example": "usj1 a/2"
+                                    },
+                                    "line2": {
+                                      "type": "string",
+                                      "example": "usj1 a/2"
+                                    },
+                                    "line3": {
+                                      "type": "string",
+                                      "example": "usj1 a/2"
+                                    },
+                                    "state": {
+                                      "type": "string",
+                                      "example": "Johor"
+                                    },
+                                    "country": {
+                                      "type": "string",
+                                      "example": "Malaysia"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "address2": {
+                                  "type": "object",
+                                  "properties": {
+                                    "line1": {
+                                      "type": "string",
+                                      "example": "SS15 13/b"
+                                    },
+                                    "line2": {
+                                      "type": "string",
+                                      "example": "SS15 13/b"
+                                    },
+                                    "line3": {
+                                      "type": "string",
+                                      "example": "SS15 13/b"
+                                    },
+                                    "state": {
+                                      "type": "string",
+                                      "example": "Selangor"
+                                    },
+                                    "country": {
+                                      "type": "string",
+                                      "example": "Malaysia"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "family": {
+                              "type": "object",
+                              "properties": {
+                                "spouse_name": {
+                                  "type": "string",
+                                  "example": "Maliha"
+                                },
+                                "spouse_ic": {
+                                  "type": "string",
+                                  "example": "A329920"
+                                },
+                                "spouse_phone": {
+                                  "type": "string",
+                                  "example": "015089790"
+                                },
+                                "spouse_email": {
+                                  "type": "string",
+                                  "example": "demo@awfatech.com"
+                                },
+                                "spouse_job": {
+                                  "type": "string",
+                                  "example": "job"
+                                },
+                                "father_name": {
+                                  "type": "string",
+                                  "example": "Abdul"
+                                },
+                                "mother_name": {
+                                  "type": "string",
+                                  "example": "Begum"
+                                },
+                                "children": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {
+                                        "type": "string",
+                                        "example": "son"
+                                      },
+                                      "school": {
+                                        "type": "string",
+                                        "example": "school"
+                                      },
+                                      "birth_date": {
+                                        "type": "string",
+                                        "example": "2005-04-08"
+                                      }
+                                    },
+                                    "additionalProperties": false
+                                  },
+                                  "uniqueItems": false
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "job": {
+                              "type": "object",
+                              "required": [
+                                "designation",
+                                "division",
+                                "job_status",
+                                "job_level",
+                                "start_date",
+                                "confirm_date",
+                                "end_date",
+                                "contract_expiry",
+                                "passport_expiry",
+                                "visa_expiry",
+                                "permit_expiry"
+                              ],
+                              "properties": {
+                                "designation": {
+                                  "type": "string",
+                                  "example": "Guru"
+                                },
+                                "division": {
+                                  "type": "string",
+                                  "example": "Pentadbiran"
+                                },
+                                "status": {
+                                  "type": "string",
+                                  "example": "kontrak"
+                                },
+                                "level": {
+                                  "type": "string",
+                                  "example": "A"
+                                },
+                                "start_date": {
+                                  "type": "string",
+                                  "example": "2022-12-19"
+                                },
+                                "confirm_date": {
+                                  "type": "string",
+                                  "example": "2022-12-19"
+                                },
+                                "end_date": {
+                                  "type": "string",
+                                  "example": "2023-06-19"
+                                },
+                                "contract_expiry": {
+                                  "type": "string",
+                                  "example": "2023-06-19"
+                                },
+                                "passport_expiry": {
+                                  "type": "string",
+                                  "example": "2023-06-19"
+                                },
+                                "visa_expiry": {
+                                  "type": "string",
+                                  "example": "2023-06-19"
+                                },
+                                "permit_expiry": {
+                                  "type": "string",
+                                  "example": "2023-06-19"
+                                },
+                                "company": {
+                                  "type": "string"
+                                },
+                                "specialization": {
+                                  "type": "string"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "education": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "level": {
+                                    "type": "string"
+                                  },
+                                  "school": {
+                                    "type": "string"
+                                  },
+                                  "year_end": {
+                                    "type": "string"
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
+                              "uniqueItems": false
+                            },
+                            "work_experience": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "job": {
+                                    "type": "string",
+                                    "example": "software engineer"
+                                  },
+                                  "company": {
+                                    "type": "string",
+                                    "example": "awfatech"
+                                  },
+                                  "year_start": {
+                                    "type": "string",
+                                    "example": "2022-12-19"
+                                  },
+                                  "year_end": {
+                                    "type": "string",
+                                    "example": "2023-06-19"
+                                  },
+                                  "division": {
+                                    "type": "string",
+                                    "example": "Pentadbiran"
+                                  },
+                                  "level": {
+                                    "type": "string"
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
+                              "uniqueItems": false
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      },
                       "additionalProperties": false
                     }
                   },
@@ -119,7 +1106,7 @@
           "400": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -154,7 +1141,7 @@
           "404": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -187,7 +1174,7 @@
           "500": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -223,7 +1210,7 @@
         "x-codegen-request-body-name": ""
       }
     },
-    "/staff/details": {
+    "/api/v2/staff/{app}/{user}/details": {
       "post": {
         "description": "API for fetching and searching staff data list.",
         "parameters": [
@@ -244,9 +1231,17 @@
             }
           }
         ],
+        "tags": [
+          "staff"
+        ],
+        "security": [
+          {
+            "encrypted_key": []
+          }
+        ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "required": [
                   "filter_uid"
@@ -272,10 +1267,10 @@
           "200": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
-                    "data(1)",
+                    "data",
                     "message",
                     "success"
                   ],
@@ -287,10 +1282,412 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": " staff data fetch successfully "
+                      "example": " staff data fetched successfully "
                     },
-                    "data(1)": {
+                    "data": {
                       "type": "object",
+                      "required": [
+                        "id",
+                        "ic",
+                        "uid",
+                        "branch_id",
+                        "status",
+                        "status_name",
+                        "system_level",
+                        "user_type",
+                        "file_image",
+                        "name",
+                        "phone",
+                        "email",
+                        "subgroup",
+                        "subgroup_name",
+                        "is_delete",
+                        "system",
+                        "personal",
+                        "address",
+                        "family",
+                        "bank",
+                        "job",
+                        "education",
+                        "work_experience"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 48
+                        },
+                        "ic": {
+                          "type": "string",
+                          "example": "093485023"
+                        },
+                        "uid": {
+                          "type": "string",
+                          "example": "A00E4"
+                        },
+                        "branch_id": {
+                          "type": "integer"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "status_name": {
+                          "type": "string"
+                        },
+                        "system_level": {
+                          "type": "string",
+                          "example": "ADMIN"
+                        },
+                        "user_type": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Razali"
+                        },
+                        "phone": {
+                          "type": "string",
+                          "example": "892340934"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "demo@awfatech.com"
+                        },
+                        "is_delete": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "system": {
+                          "type": "object",
+                          "required": [
+                            "update_at",
+                            "update_by",
+                            "delete_at",
+                            "delete_by"
+                          ],
+                          "properties": {
+                            "created_at": {
+                              "type": "string",
+                              "example": "2023-12-31 23:59:59"
+                            },
+                            "created_by": {
+                              "type": "string",
+                              "example": "2023-12-31 23:59:59"
+                            },
+                            "update_at": {
+                              "type": "string",
+                              "example": "2024-01-03 09:47:08"
+                            },
+                            "update_by": {
+                              "type": "string",
+                              "example": "Root"
+                            },
+                            "delete_at": {
+                              "type": "string"
+                            },
+                            "delete_by": {
+                              "type": "string"
+                            },
+                            "module": {
+                              "type": "string",
+                              "example": "staff"
+                            },
+                            "user_level": {
+                              "type": "string"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "personal": {
+                          "type": "object",
+                          "properties": {
+                            "full_name": {
+                              "type": "string",
+                              "example": "Mr Razali"
+                            },
+                            "nick_name": {
+                              "type": "string",
+                              "example": "Raza"
+                            },
+                            "primary_phone": {
+                              "type": "string",
+                              "example": "013678980"
+                            },
+                            "primary_email": {
+                              "type": "string",
+                              "example": "demo@email.com"
+                            },
+                            "birth_date": {
+                              "type": "string",
+                              "example": "1985-09-19"
+                            },
+                            "race": {
+                              "type": "string",
+                              "example": "Malay"
+                            },
+                            "gender": {
+                              "type": "string",
+                              "example": "Male"
+                            },
+                            "religion": {
+                              "type": "string",
+                              "example": "Islam"
+                            },
+                            " citizen": {
+                              "type": "string",
+                              "example": "Albania"
+                            },
+                            "education": {
+                              "type": "string",
+                              "example": "SPM"
+                            },
+                            "file_profile_path": {
+                              "type": "string"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "address": {
+                          "type": "object",
+                          "required": [
+                            "main",
+                            "address2",
+                            "address3"
+                          ],
+                          "properties": {
+                            "main": {
+                              "type": "object",
+                              "properties": {
+                                "line1": {
+                                  "type": "string",
+                                  "example": "usj1 a/2"
+                                },
+                                "line2": {
+                                  "type": "string",
+                                  "example": "usj1 a/2"
+                                },
+                                "line3": {
+                                  "type": "string",
+                                  "example": "usj1 a/2"
+                                },
+                                "state": {
+                                  "type": "string",
+                                  "example": "Johor"
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "example": "Malaysia"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "address2": {
+                              "type": "object",
+                              "properties": {
+                                "line1": {
+                                  "type": "string",
+                                  "example": "SS15 13/b"
+                                },
+                                "line2": {
+                                  "type": "string",
+                                  "example": "SS15 13/b"
+                                },
+                                "line3": {
+                                  "type": "string",
+                                  "example": "SS15 13/b"
+                                },
+                                "state": {
+                                  "type": "string",
+                                  "example": "Selangor"
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "example": "Malaysia"
+                                }
+                              },
+                              "additionalProperties": false
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "family": {
+                          "type": "object",
+                          "properties": {
+                            "spouse_name": {
+                              "type": "string",
+                              "example": "Maliha"
+                            },
+                            "spouse_ic": {
+                              "type": "string",
+                              "example": "A329920"
+                            },
+                            "spouse_phone": {
+                              "type": "string",
+                              "example": "015089790"
+                            },
+                            "spouse_email": {
+                              "type": "string",
+                              "example": "demo@awfatech.com"
+                            },
+                            "spouse_job": {
+                              "type": "string",
+                              "example": "job"
+                            },
+                            "father_name": {
+                              "type": "string",
+                              "example": "Abdul"
+                            },
+                            "mother_name": {
+                              "type": "string",
+                              "example": "Begum"
+                            },
+                            "children": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "name": {
+                                    "type": "string",
+                                    "example": "son"
+                                  },
+                                  "school": {
+                                    "type": "string",
+                                    "example": "school"
+                                  },
+                                  "birth_date": {
+                                    "type": "string",
+                                    "example": "2005-04-08"
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
+                              "uniqueItems": false
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "job": {
+                          "type": "object",
+                          "required": [
+                            "designation",
+                            "division",
+                            "job_status",
+                            "job_level",
+                            "start_date",
+                            "confirm_date",
+                            "end_date",
+                            "contract_expiry",
+                            "passport_expiry",
+                            "visa_expiry",
+                            "permit_expiry"
+                          ],
+                          "properties": {
+                            "designation": {
+                              "type": "string",
+                              "example": "Guru"
+                            },
+                            "division": {
+                              "type": "string",
+                              "example": "Pentadbiran"
+                            },
+                            "status": {
+                              "type": "string",
+                              "example": "kontrak"
+                            },
+                            "level": {
+                              "type": "string",
+                              "example": "A"
+                            },
+                            "start_date": {
+                              "type": "string",
+                              "example": "2022-12-19"
+                            },
+                            "confirm_date": {
+                              "type": "string",
+                              "example": "2022-12-19"
+                            },
+                            "end_date": {
+                              "type": "string",
+                              "example": "2023-06-19"
+                            },
+                            "contract_expiry": {
+                              "type": "string",
+                              "example": "2023-06-19"
+                            },
+                            "passport_expiry": {
+                              "type": "string",
+                              "example": "2023-06-19"
+                            },
+                            "visa_expiry": {
+                              "type": "string",
+                              "example": "2023-06-19"
+                            },
+                            "permit_expiry": {
+                              "type": "string",
+                              "example": "2023-06-19"
+                            },
+                            "company": {
+                              "type": "string"
+                            },
+                            "specialization": {
+                              "type": "string"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "education": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "level": {
+                                "type": "string"
+                              },
+                              "school": {
+                                "type": "string"
+                              },
+                              "year_end": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "uniqueItems": false
+                        },
+                        "work_experience": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "job": {
+                                "type": "string",
+                                "example": "software engineer"
+                              },
+                              "company": {
+                                "type": "string",
+                                "example": "awfatech"
+                              },
+                              "year_start": {
+                                "type": "string",
+                                "example": "2022-12-19"
+                              },
+                              "year_end": {
+                                "type": "string",
+                                "example": "2023-06-19"
+                              },
+                              "division": {
+                                "type": "string",
+                                "example": "Pentadbiran"
+                              },
+                              "level": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "uniqueItems": false
+                        }
+                      },
                       "additionalProperties": false
                     }
                   },
@@ -302,7 +1699,7 @@
           "400": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -337,7 +1734,7 @@
           "404": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -370,7 +1767,7 @@
           "500": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -406,7 +1803,7 @@
         "x-codegen-request-body-name": ""
       }
     },
-    "/staff/create": {
+    "/api/v2/staff/{app}/{user}/create": {
       "post": {
         "parameters": [
           {
@@ -426,9 +1823,17 @@
             }
           }
         ],
+        "tags": [
+          "staff"
+        ],
+        "security": [
+          {
+            "encrypted_key": []
+          }
+        ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -438,6 +1843,345 @@
                   },
                   "data": {
                     "type": "object",
+                    "required": [
+                      "id",
+                      "ic",
+                      "uid",
+                      "branch_id",
+                      "status",
+                      "status_name",
+                      "system_level",
+                      "user_type",
+                      "file_image",
+                      "name",
+                      "phone",
+                      "email",
+                      "subgroup",
+                      "subgroup_name",
+                      "is_delete",
+                      "system",
+                      "personal",
+                      "address",
+                      "family",
+                      "bank",
+                      "job",
+                      "education",
+                      "work_experience"
+                    ],
+                    "properties": {
+                      "ic": {
+                        "type": "string",
+                        "example": "093485023"
+                      },
+                      "branch_id": {
+                        "type": "integer"
+                      },
+                      "status": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "system_level": {
+                        "type": "string",
+                        "example": "ADMIN"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Razali"
+                      },
+                      "phone": {
+                        "type": "string",
+                        "example": "892340934"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "demo@awfatech.com"
+                      },
+                      "personal": {
+                        "type": "object",
+                        "properties": {
+                          "full_name": {
+                            "type": "string",
+                            "example": "Mr Razali"
+                          },
+                          "nick_name": {
+                            "type": "string",
+                            "example": "Raza"
+                          },
+                          "primary_phone": {
+                            "type": "string",
+                            "example": "013678980"
+                          },
+                          "primary_email": {
+                            "type": "string",
+                            "example": "demo@email.com"
+                          },
+                          "birth_date": {
+                            "type": "string",
+                            "example": "1985-09-19"
+                          },
+                          "race": {
+                            "type": "string",
+                            "example": "Malay"
+                          },
+                          "gender": {
+                            "type": "string",
+                            "example": "Male"
+                          },
+                          "religion": {
+                            "type": "string",
+                            "example": "Islam"
+                          },
+                          " citizen": {
+                            "type": "string",
+                            "example": "Albania"
+                          },
+                          "education": {
+                            "type": "string",
+                            "example": "SPM"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "address": {
+                        "type": "object",
+                        "required": [
+                          "main",
+                          "address2",
+                          "address3"
+                        ],
+                        "properties": {
+                          "main": {
+                            "type": "object",
+                            "properties": {
+                              "line1": {
+                                "type": "string",
+                                "example": "usj1 a/2"
+                              },
+                              "line2": {
+                                "type": "string",
+                                "example": "usj1 a/2"
+                              },
+                              "line3": {
+                                "type": "string",
+                                "example": "usj1 a/2"
+                              },
+                              "state": {
+                                "type": "string",
+                                "example": "Johor"
+                              },
+                              "country": {
+                                "type": "string",
+                                "example": "Malaysia"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "address2": {
+                            "type": "object",
+                            "properties": {
+                              "line1": {
+                                "type": "string",
+                                "example": "SS15 13/b"
+                              },
+                              "line2": {
+                                "type": "string",
+                                "example": "SS15 13/b"
+                              },
+                              "line3": {
+                                "type": "string",
+                                "example": "SS15 13/b"
+                              },
+                              "state": {
+                                "type": "string",
+                                "example": "Selangor"
+                              },
+                              "country": {
+                                "type": "string",
+                                "example": "Malaysia"
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "family": {
+                        "type": "object",
+                        "properties": {
+                          "spouse_name": {
+                            "type": "string",
+                            "example": "Maliha"
+                          },
+                          "spouse_ic": {
+                            "type": "string",
+                            "example": "A329920"
+                          },
+                          "spouse_phone": {
+                            "type": "string",
+                            "example": "015089790"
+                          },
+                          "spouse_email": {
+                            "type": "string",
+                            "example": "demo@awfatech.com"
+                          },
+                          "spouse_job": {
+                            "type": "string",
+                            "example": "job"
+                          },
+                          "father_name": {
+                            "type": "string",
+                            "example": "Abdul"
+                          },
+                          "mother_name": {
+                            "type": "string",
+                            "example": "Begum"
+                          },
+                          "children": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "example": "son"
+                                },
+                                "school": {
+                                  "type": "string",
+                                  "example": "school"
+                                },
+                                "birth_date": {
+                                  "type": "string",
+                                  "example": "2005-04-08"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "uniqueItems": false
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "job": {
+                        "type": "object",
+                        "required": [
+                          "designation",
+                          "division",
+                          "job_status",
+                          "job_level",
+                          "start_date",
+                          "confirm_date",
+                          "end_date",
+                          "contract_expiry",
+                          "passport_expiry",
+                          "visa_expiry",
+                          "permit_expiry"
+                        ],
+                        "properties": {
+                          "designation": {
+                            "type": "string",
+                            "example": "Guru"
+                          },
+                          "division": {
+                            "type": "string",
+                            "example": "Pentadbiran"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "kontrak"
+                          },
+                          "level": {
+                            "type": "string",
+                            "example": "A"
+                          },
+                          "start_date": {
+                            "type": "string",
+                            "example": "2022-12-19"
+                          },
+                          "confirm_date": {
+                            "type": "string",
+                            "example": "2022-12-19"
+                          },
+                          "end_date": {
+                            "type": "string",
+                            "example": "2023-06-19"
+                          },
+                          "contract_expiry": {
+                            "type": "string",
+                            "example": "2023-06-19"
+                          },
+                          "passport_expiry": {
+                            "type": "string",
+                            "example": "2023-06-19"
+                          },
+                          "visa_expiry": {
+                            "type": "string",
+                            "example": "2023-06-19"
+                          },
+                          "permit_expiry": {
+                            "type": "string",
+                            "example": "2023-06-19"
+                          },
+                          "company": {
+                            "type": "string"
+                          },
+                          "specialization": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "education": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "level": {
+                              "type": "string"
+                            },
+                            "school": {
+                              "type": "string"
+                            },
+                            "year_end": {
+                              "type": "string"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "uniqueItems": false
+                      },
+                      "work_experience": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "job": {
+                              "type": "string",
+                              "example": "software engineer"
+                            },
+                            "company": {
+                              "type": "string",
+                              "example": "awfatech"
+                            },
+                            "year_start": {
+                              "type": "string",
+                              "example": "2022-12-19"
+                            },
+                            "year_end": {
+                              "type": "string",
+                              "example": "2023-06-19"
+                            },
+                            "division": {
+                              "type": "string"
+                            },
+                            "level": {
+                              "type": "string"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "uniqueItems": false
+                      }
+                    },
                     "additionalProperties": false
                   }
                 },
@@ -451,7 +2195,7 @@
           "201": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "data",
@@ -480,7 +2224,7 @@
           "400": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -515,7 +2259,7 @@
           "404": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -550,7 +2294,7 @@
           "500": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -586,7 +2330,7 @@
         "x-codegen-request-body-name": ""
       }
     },
-    "/staff/update": {
+    "/api/v2/staff/{app}/{user}/update": {
       "post": {
         "parameters": [
           {
@@ -606,9 +2350,17 @@
             }
           }
         ],
+        "tags": [
+          "staff"
+        ],
+        "security": [
+          {
+            "encrypted_key": []
+          }
+        ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "required": [
                   "action",
@@ -628,6 +2380,345 @@
                   },
                   "data": {
                     "type": "object",
+                    "required": [
+                      "id",
+                      "ic",
+                      "uid",
+                      "branch_id",
+                      "status",
+                      "status_name",
+                      "system_level",
+                      "user_type",
+                      "file_image",
+                      "name",
+                      "phone",
+                      "email",
+                      "subgroup",
+                      "subgroup_name",
+                      "is_delete",
+                      "system",
+                      "personal",
+                      "address",
+                      "family",
+                      "bank",
+                      "job",
+                      "education",
+                      "work_experience"
+                    ],
+                    "properties": {
+                      "ic": {
+                        "type": "string",
+                        "example": "093485023"
+                      },
+                      "branch_id": {
+                        "type": "integer"
+                      },
+                      "status": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "system_level": {
+                        "type": "string",
+                        "example": "ADMIN"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Razali"
+                      },
+                      "phone": {
+                        "type": "string",
+                        "example": "892340934"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "demo@awfatech.com"
+                      },
+                      "personal": {
+                        "type": "object",
+                        "properties": {
+                          "full_name": {
+                            "type": "string",
+                            "example": "Mr Razali"
+                          },
+                          "nick_name": {
+                            "type": "string",
+                            "example": "Raza"
+                          },
+                          "primary_phone": {
+                            "type": "string",
+                            "example": "013678980"
+                          },
+                          "primary_email": {
+                            "type": "string",
+                            "example": "demo@email.com"
+                          },
+                          "birth_date": {
+                            "type": "string",
+                            "example": "1985-09-19"
+                          },
+                          "race": {
+                            "type": "string",
+                            "example": "Malay"
+                          },
+                          "gender": {
+                            "type": "string",
+                            "example": "Male"
+                          },
+                          "religion": {
+                            "type": "string",
+                            "example": "Islam"
+                          },
+                          " citizen": {
+                            "type": "string",
+                            "example": "Albania"
+                          },
+                          "education": {
+                            "type": "string",
+                            "example": "SPM"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "address": {
+                        "type": "object",
+                        "required": [
+                          "main",
+                          "address2",
+                          "address3"
+                        ],
+                        "properties": {
+                          "main": {
+                            "type": "object",
+                            "properties": {
+                              "line1": {
+                                "type": "string",
+                                "example": "usj1 a/2"
+                              },
+                              "line2": {
+                                "type": "string",
+                                "example": "usj1 a/2"
+                              },
+                              "line3": {
+                                "type": "string",
+                                "example": "usj1 a/2"
+                              },
+                              "state": {
+                                "type": "string",
+                                "example": "Johor"
+                              },
+                              "country": {
+                                "type": "string",
+                                "example": "Malaysia"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "address2": {
+                            "type": "object",
+                            "properties": {
+                              "line1": {
+                                "type": "string",
+                                "example": "SS15 13/b"
+                              },
+                              "line2": {
+                                "type": "string",
+                                "example": "SS15 13/b"
+                              },
+                              "line3": {
+                                "type": "string",
+                                "example": "SS15 13/b"
+                              },
+                              "state": {
+                                "type": "string",
+                                "example": "Selangor"
+                              },
+                              "country": {
+                                "type": "string",
+                                "example": "Malaysia"
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "family": {
+                        "type": "object",
+                        "properties": {
+                          "spouse_name": {
+                            "type": "string",
+                            "example": "Maliha"
+                          },
+                          "spouse_ic": {
+                            "type": "string",
+                            "example": "A329920"
+                          },
+                          "spouse_phone": {
+                            "type": "string",
+                            "example": "015089790"
+                          },
+                          "spouse_email": {
+                            "type": "string",
+                            "example": "demo@awfatech.com"
+                          },
+                          "spouse_job": {
+                            "type": "string",
+                            "example": "job"
+                          },
+                          "father_name": {
+                            "type": "string",
+                            "example": "Abdul"
+                          },
+                          "mother_name": {
+                            "type": "string",
+                            "example": "Begum"
+                          },
+                          "children": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "example": "son"
+                                },
+                                "school": {
+                                  "type": "string",
+                                  "example": "school"
+                                },
+                                "birth_date": {
+                                  "type": "string",
+                                  "example": "2005-04-08"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "uniqueItems": false
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "job": {
+                        "type": "object",
+                        "required": [
+                          "designation",
+                          "division",
+                          "job_status",
+                          "job_level",
+                          "start_date",
+                          "confirm_date",
+                          "end_date",
+                          "contract_expiry",
+                          "passport_expiry",
+                          "visa_expiry",
+                          "permit_expiry"
+                        ],
+                        "properties": {
+                          "designation": {
+                            "type": "string",
+                            "example": "Guru"
+                          },
+                          "division": {
+                            "type": "string",
+                            "example": "Pentadbiran"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "kontrak"
+                          },
+                          "level": {
+                            "type": "string",
+                            "example": "A"
+                          },
+                          "start_date": {
+                            "type": "string",
+                            "example": "2022-12-19"
+                          },
+                          "confirm_date": {
+                            "type": "string",
+                            "example": "2022-12-19"
+                          },
+                          "end_date": {
+                            "type": "string",
+                            "example": "2023-06-19"
+                          },
+                          "contract_expiry": {
+                            "type": "string",
+                            "example": "2023-06-19"
+                          },
+                          "passport_expiry": {
+                            "type": "string",
+                            "example": "2023-06-19"
+                          },
+                          "visa_expiry": {
+                            "type": "string",
+                            "example": "2023-06-19"
+                          },
+                          "permit_expiry": {
+                            "type": "string",
+                            "example": "2023-06-19"
+                          },
+                          "company": {
+                            "type": "string"
+                          },
+                          "specialization": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "education": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "level": {
+                              "type": "string"
+                            },
+                            "school": {
+                              "type": "string"
+                            },
+                            "year_end": {
+                              "type": "string"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "uniqueItems": false
+                      },
+                      "work_experience": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "job": {
+                              "type": "string",
+                              "example": "software engineer"
+                            },
+                            "company": {
+                              "type": "string",
+                              "example": "awfatech"
+                            },
+                            "year_start": {
+                              "type": "string",
+                              "example": "2022-12-19"
+                            },
+                            "year_end": {
+                              "type": "string",
+                              "example": "2023-06-19"
+                            },
+                            "division": {
+                              "type": "string"
+                            },
+                            "level": {
+                              "type": "string"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "uniqueItems": false
+                      }
+                    },
                     "additionalProperties": false
                   }
                 },
@@ -641,7 +2732,7 @@
           "200": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "data",
@@ -670,7 +2761,7 @@
           "400": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -705,7 +2796,7 @@
           "404": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -740,7 +2831,7 @@
           "500": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -776,7 +2867,7 @@
         "x-codegen-request-body-name": ""
       }
     },
-    "/staff/delete": {
+    "/api/v2/staff/{app}/{user}/delete": {
       "post": {
         "parameters": [
           {
@@ -796,9 +2887,17 @@
             }
           }
         ],
+        "tags": [
+          "staff"
+        ],
+        "security": [
+          {
+            "encrypted_key": []
+          }
+        ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "required": [
                   "action",
@@ -826,7 +2925,7 @@
           "200": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "data",
@@ -855,7 +2954,7 @@
           "400": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -890,7 +2989,7 @@
           "404": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -925,7 +3024,7 @@
           "500": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -962,6 +3061,5 @@
       }
     }
   },
-  "components": {},
   "x-original-swagger-version": "2.0"
 }

@@ -6,22 +6,576 @@
   },
   "servers": [
     {
-      "url": "http://localhost:10000",
-      "description": "Local server"
-    },
-    {
       "url": "https://devapi01.awfatech.com",
       "description": "Development server"
     },
     {
       "url": "https://api01.awfatech.com",
-      "description": "Production server" 
-  }
+      "description": "Production server"
+    }
   ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "Enter the token",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
   "paths": {
-    "/alumni/list": {
+    "/api/v2/auth/appcode": {
       "post": {
-        "description": "This API for creating alumni data.",
+        "summary": "Getting the user's right server id by appcode given",
+        "operationId": "postApiV2AuthAppcode",
+        "description": "Getting server_id value from this api and use that to retrive data from others api",
+        "tags": [
+          "auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "appcode"
+                ],
+                "type": "object",
+                "properties": {
+                  "appcode": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "encrypted_key": {
+                          "type": "string",
+                          "example": "Here will be a encrypted key token"
+                        },
+                        "server_id": {
+                          "type": "string",
+                          "example": "1693883178"
+                        },
+                        "sid": {
+                          "type": "string",
+                          "example": "0"
+                        },
+                        "client_appname": {
+                          "type": "string",
+                          "example": "EBOSS"
+                        },
+                        "client_appengine": {
+                          "type": "string",
+                          "example": ""
+                        },
+                        "client_tel": {
+                          "type": "string",
+                          "example": "0192134562"
+                        },
+                        "client_regno": {
+                          "type": "string",
+                          "example": "CT0077167-P"
+                        },
+                        "client_address": {
+                          "type": "string",
+                          "example": "80"
+                        },
+                        "client_postcode": {
+                          "type": "string",
+                          "example": "30010"
+                        },
+                        "client_district": {
+                          "type": "string",
+                          "example": ""
+                        },
+                        "client_state": {
+                          "type": "string",
+                          "example": "Perak"
+                        },
+                        "customer": {
+                          "type": "string",
+                          "example": "TEST EBOSS"
+                        },
+                        "client_logo": {
+                          "type": "string",
+                          "example": "https://eboss.awfatech.com/bos0070/content/logo/aauto.png"
+                        },
+                        "app_config": {
+                          "type": "string",
+                          "example": "ALERT|ATTSTAFF|CLIENTWALLET|OUTING|CALENDAR|"
+                        },
+                        "url": {
+                          "type": "string",
+                          "example": "https://eboss.awfatech.com/bos0070"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "seccess"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "seccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Missing authentication"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "seccess"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "seccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action not found"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-order": 1
+      }
+    },
+    "/api/v2/auth/{app}/{user}/login": {
+      "post": {
+        "summary": "Login user",
+        "operationId": "postApiV2AuthAppUserLogin",
+        "description": "Getting user credentials and token to access locked api | notes: platform_code : [1:android 2:ios 3:web]",
+        "parameters": [
+          {
+            "name": "x-encrypted-key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "app",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "eboss",
+                "asis",
+                "sbd",
+                "pos",
+                "lms",
+                "careline",
+                "alumni"
+              ]
+            },
+            "required": true
+          },
+          {
+            "name": "user",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "encrypted_key": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "app_version": {
+                    "type": "string",
+                    "example": "1.0.0"
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "testuser"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "12345"
+                  },
+                  "login_type": {
+                    "type": "string",
+                    "example": "normal"
+                  },
+                  "firebase_id": {
+                    "type": "string",
+                    "example": "hello"
+                  },
+                  "platform_code": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "example": "Here will be a authorization token"
+                        },
+                        "encrypted_user": {
+                          "type": "string",
+                          "example": "Here will be a encrypted user token"
+                        },
+                        "server_id": {
+                          "type": "string"
+                        },
+                        "user_id": {
+                          "type": "string",
+                          "example": "AAP017"
+                        },
+                        "user_sid": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "user_name": {
+                          "type": "string",
+                          "example": "MOHAMAD FIRDAUS BIN MOHAMAD SUKRI"
+                        },
+                        "user_image": {
+                          "type": "string"
+                        },
+                        "user_phone_num": {
+                          "type": "string",
+                          "example": "0192660251"
+                        },
+                        "user_ic": {
+                          "type": "string",
+                          "example": "910901025743"
+                        },
+                        "user_email": {
+                          "type": "string",
+                          "example": "mohamadfirdaus1991@gmail.com"
+                        },
+                        "user_addr": {
+                          "type": "string"
+                        },
+                        "sch_name": {
+                          "type": "string",
+                          "example": "TEST EBOSS"
+                        },
+                        "sch_addr": {
+                          "type": "string",
+                          "example": "80"
+                        },
+                        "sch_coordinate": {
+                          "type": "string",
+                          "example": "4.630973484589474,101.09618872404099"
+                        },
+                        "sch_radius": {
+                          "type": "string"
+                        },
+                        "system_access": {
+                          "type": "string"
+                        },
+                        "system_config": {
+                          "type": "string",
+                          "enum": [
+                              "ALERT|ATTSTAFF|CLIENTWALLET|OUTING|CALENDAR|"
+                          ]
+                      },
+                        "bos_config": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "seccess"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "seccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Missing authentication"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "seccess"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "seccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action not found"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-order": 2
+      }
+    },
+    "/api/v2/crm/{app}/{user}/alumni-list": {
+      "post": {
+        "description": "This API fetch alumni data list based on required fields.",
         "parameters": [
           {
             "name": "x-encrypted-key",
@@ -38,11 +592,33 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "app",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "default": "eboss"
+          },
+          {
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "default": "alumni"
+          }
+        ],
+        "tags": [
+          "alumni"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
           }
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "required": [
                   "action",
@@ -63,7 +639,8 @@
                     "example": "0"
                   },
                   "page_limit": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 10
                   },
                   "filter_delete": {
                     "type": "integer",
@@ -71,14 +648,14 @@
                   },
                   "filter_search": {
                     "type": "string",
-                    "example": "Razali"
+                    "example": ""
                   },
                   "page_start": {
                     "type": "integer"
                   },
                   "page_order": {
                     "type": "string",
-                    "example": "0"
+                    "example": "id"
                   },
                   "page_sort": {
                     "type": "string",
@@ -95,7 +672,7 @@
           "200": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "message",
@@ -113,6 +690,689 @@
                     },
                     "data": {
                       "type": "object",
+                      "required": [
+                        "total_count",
+                        "total_data",
+                        "data"
+                      ],
+                      "properties": {
+                        "total_count": {
+                          "type": "integer",
+                          "example": 20
+                        },
+                        "total_data": {
+                          "type": "integer",
+                          "example": 20
+                        },
+                        "data": {
+                          "type": "object",
+                          "required": [
+                            "branch_id",
+                            "is_delete",
+                            "personal",
+                            "alumni",
+                            "sid",
+                            "address",
+                            "job",
+                            "education",
+                            "system"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 48
+                            },
+                            "uid": {
+                              "type": "string",
+                              "example": "65a93bb149982"
+                            },
+                            "ic": {
+                              "type": "string",
+                              "example": "4567890"
+                            },
+                            "branch_id": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "user_no": {
+                              "type": "string",
+                              "example": "0"
+                            },
+                            "user_type": {
+                              "type": "string",
+                              "example": "ALUMNI"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Razali"
+                            },
+                            "phone": {
+                              "type": "string",
+                              "example": "013567890"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "demo@mail.com"
+                            },
+                            "category": {
+                              "type": "string",
+                              "example": "category"
+                            },
+                            "category_name": {
+                              "type": "string",
+                              "example": "category name"
+                            },
+                            "group": {
+                              "type": "string",
+                              "example": "group"
+                            },
+                            "group_name": {
+                              "type": "string",
+                              "example": "group name"
+                            },
+                            "subgroup": {
+                              "type": "string",
+                              "example": "subgroup"
+                            },
+                            "subgroup_name": {
+                              "type": "string",
+                              "example": "subgroup name"
+                            },
+                            "status": {
+                              "type": "string",
+                              "example": "status"
+                            },
+                            "status_name": {
+                              "type": "string",
+                              "example": "status name"
+                            },
+                            "is_delete": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "personal": {
+                              "type": "object",
+                              "required": [
+                                "full_name",
+                                "nick_name"
+                              ],
+                              "properties": {
+                                "full_name": {
+                                  "type": "string",
+                                  "example": "Mr Razali"
+                                },
+                                "nick_name": {
+                                  "type": "string",
+                                  "example": "Razali"
+                                },
+                                "gender": {
+                                  "type": "string",
+                                  "example": "1"
+                                },
+                                "birth_date": {
+                                  "type": "string",
+                                  "format": "date",
+                                  "example": "1987-04-02"
+                                },
+                                "race": {
+                                  "type": "string",
+                                  "example": "Malay"
+                                },
+                                "religion": {
+                                  "type": "string",
+                                  "example": "islam"
+                                },
+                                "file_profile": {
+                                  "type": "string",
+                                  "example": "file_profile.jpg"
+                                },
+                                "file_profile_path": {
+                                  "type": "string",
+                                  "example": "/testalumni/content/alumni"
+                                },
+                                "primary_phone": {
+                                  "type": "string",
+                                  "example": "014567890"
+                                },
+                                "secondary_phone": {
+                                  "type": "string",
+                                  "example": "014567890"
+                                },
+                                "primary_email": {
+                                  "type": "string",
+                                  "example": "demo@email.com"
+                                },
+                                "secondary_email": {
+                                  "type": "string",
+                                  "example": "demo2@email.com"
+                                },
+                                "citizen": {
+                                  "type": "string",
+                                  "example": "malaysia"
+                                },
+                                "education": {
+                                  "type": "string",
+                                  "example": "phd"
+                                },
+                                "marital": {
+                                  "type": "string",
+                                  "example": "married"
+                                },
+                                "file_profile_url": {
+                                  "type": "string",
+                                  "example": "file_profile_url.jpg"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "alumni": {
+                              "type": "object",
+                              "properties": {
+                                "school_code": {
+                                  "type": "string",
+                                  "example": "100"
+                                },
+                                "school_name": {
+                                  "type": "string",
+                                  "example": "TAHFIZ DIPLOMA MAAHAD"
+                                },
+                                "year_start": {
+                                  "type": "string",
+                                  "example": "2013"
+                                },
+                                "year_end": {
+                                  "type": "string",
+                                  "example": "2016"
+                                },
+                                "end_reason": {
+                                  "type": "string",
+                                  "example": "PP"
+                                },
+                                "is_confirm": {
+                                  "type": "string",
+                                  "example": "1"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "sid": {
+                              "type": "integer",
+                              "example": 0
+                            },
+                            "address": {
+                              "type": "object",
+                              "properties": {
+                                "main": {
+                                  "type": "object",
+                                  "properties": {
+                                    "line1": {
+                                      "type": "string",
+                                      "example": "no 5-1 jalan usj1/a"
+                                    },
+                                    "line2": {
+                                      "type": "string",
+                                      "example": "no 5-1 jalan usj1/a"
+                                    },
+                                    "city": {
+                                      "type": "string",
+                                      "example": "subang jaya"
+                                    },
+                                    "postcode ": {
+                                      "type": "string",
+                                      "example": "47500"
+                                    },
+                                    "state": {
+                                      "type": "string",
+                                      "example": "Selangor"
+                                    },
+                                    "country": {
+                                      "type": "string",
+                                      "example": "Malaysia"
+                                    },
+                                    "is_confirm": {
+                                      "type": "string",
+                                      "example": "1"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "address2": {
+                                  "type": "object",
+                                  "properties": {
+                                    "line1": {
+                                      "type": "string",
+                                      "example": "no 5-1 jalan usj1/a"
+                                    },
+                                    "line2": {
+                                      "type": "string",
+                                      "example": "no 5-1 jalan usj1/a"
+                                    },
+                                    "city": {
+                                      "type": "string",
+                                      "example": "subang jaya"
+                                    },
+                                    "postcode ": {
+                                      "type": "string",
+                                      "example": "47500"
+                                    },
+                                    "state": {
+                                      "type": "string",
+                                      "example": "Selangor"
+                                    },
+                                    "country": {
+                                      "type": "string",
+                                      "example": "Malaysia"
+                                    },
+                                    "is_confirm": {
+                                      "type": "string",
+                                      "example": "1"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "address3": {
+                                  "type": "object",
+                                  "properties": {
+                                    "line1": {
+                                      "type": "string",
+                                      "example": "no 5-1 jalan usj1/a"
+                                    },
+                                    "line2": {
+                                      "type": "string",
+                                      "example": "no 5-1 jalan usj1/a"
+                                    },
+                                    "city": {
+                                      "type": "string",
+                                      "example": "subang jaya"
+                                    },
+                                    "postcode ": {
+                                      "type": "string",
+                                      "example": "47500"
+                                    },
+                                    "state": {
+                                      "type": "string",
+                                      "example": "Selangor"
+                                    },
+                                    "country": {
+                                      "type": "string",
+                                      "example": "Malaysia"
+                                    },
+                                    "is_confirm": {
+                                      "type": "string",
+                                      "example": "1"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "job": {
+                              "type": "object",
+                              "properties": {
+                                "company": {
+                                  "type": "string",
+                                  "example": "Tidah"
+                                },
+                                "designation": {
+                                  "type": "string",
+                                  "example": "Tidah"
+                                },
+                                "division": {
+                                  "type": "string",
+                                  "example": "IT"
+                                },
+                                "specialization": {
+                                  "type": "string",
+                                  "example": "PERAKAUNAN"
+                                },
+                                "salary": {
+                                  "type": "string",
+                                  "example": "00000"
+                                },
+                                "working_state": {
+                                  "type": "string",
+                                  "example": "Kedah"
+                                },
+                                "working_country": {
+                                  "type": "string",
+                                  "example": "Malaysia"
+                                },
+                                "achievement": {
+                                  "type": "string",
+                                  "example": "best staff 2001"
+                                },
+                                "is_confirm": {
+                                  "type": "string",
+                                  "example": "1"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "education": {
+                              "type": "object",
+                              "properties": {
+                                "spm": {
+                                  "type": "object",
+                                  "properties": {
+                                    "level": {
+                                      "type": "string",
+                                      "example": "spm"
+                                    },
+                                    "school": {
+                                      "type": "string",
+                                      "example": "ST GEOAGE"
+                                    },
+                                    "program": {
+                                      "type": "string",
+                                      "example": "SASTERA"
+                                    },
+                                    "result": {
+                                      "type": "string",
+                                      "example": "10A"
+                                    },
+                                    "achievement": {
+                                      "type": "string",
+                                      "example": "BEST"
+                                    },
+                                    "year_end": {
+                                      "type": "string",
+                                      "example": "1999"
+                                    },
+                                    "is_confirm": {
+                                      "type": "string",
+                                      "example": "1"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "others": {
+                                  "type": "object",
+                                  "properties": {
+                                    "programe": {
+                                      "type": "string",
+                                      "example": "Others"
+                                    },
+                                    "school": {
+                                      "type": "string",
+                                      "example": "UUM"
+                                    },
+                                    "course": {
+                                      "type": "string",
+                                      "example": "MATRIK"
+                                    },
+                                    "result": {
+                                      "type": "string",
+                                      "example": "3.0"
+                                    },
+                                    "country": {
+                                      "type": "string",
+                                      "example": "Malaysia"
+                                    },
+                                    "achievement": {
+                                      "type": "string",
+                                      "example": "BEST"
+                                    },
+                                    "scholarship": {
+                                      "type": "string",
+                                      "example": "JPA"
+                                    },
+                                    "year_start": {
+                                      "type": "string",
+                                      "example": "1999"
+                                    },
+                                    "year_end": {
+                                      "type": "string",
+                                      "example": "2001"
+                                    },
+                                    "end_reason": {
+                                      "type": "string",
+                                      "example": "TAMAT"
+                                    },
+                                    "is_confirm": {
+                                      "type": "string",
+                                      "example": "1"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "bachelor_degree": {
+                                  "type": "object",
+                                  "properties": {
+                                    "level": {
+                                      "type": "string",
+                                      "example": "Bachelor Degree"
+                                    },
+                                    "school": {
+                                      "type": "string",
+                                      "example": "MMU"
+                                    },
+                                    "program": {
+                                      "type": "string",
+                                      "example": "SC"
+                                    },
+                                    "result": {
+                                      "type": "string",
+                                      "example": "3.9"
+                                    },
+                                    "country": {
+                                      "type": "string",
+                                      "example": "Malaysia"
+                                    },
+                                    "achivement": {
+                                      "type": "string",
+                                      "example": "Dean List"
+                                    },
+                                    "scholarship": {
+                                      "type": "string",
+                                      "example": "MARA"
+                                    },
+                                    "year_start": {
+                                      "type": "string",
+                                      "example": "2018"
+                                    },
+                                    "year_end": {
+                                      "type": "string",
+                                      "example": "2010"
+                                    },
+                                    "end_reason": {
+                                      "type": "string",
+                                      "example": "GRADE"
+                                    },
+                                    "is_confirm": {
+                                      "type": "string",
+                                      "example": "1"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "masters_degree": {
+                                  "type": "object",
+                                  "properties": {
+                                    "level": {
+                                      "type": "string",
+                                      "example": "Masters Degree"
+                                    },
+                                    "school": {
+                                      "type": "string",
+                                      "example": "MMU"
+                                    },
+                                    "program": {
+                                      "type": "string",
+                                      "example": "SC"
+                                    },
+                                    "result": {
+                                      "type": "string",
+                                      "example": "3.9"
+                                    },
+                                    "country": {
+                                      "type": "string",
+                                      "example": "Malaysia"
+                                    },
+                                    "achivement": {
+                                      "type": "string",
+                                      "example": "Dean List"
+                                    },
+                                    "scholarship": {
+                                      "type": "string",
+                                      "example": "MARA"
+                                    },
+                                    "year_start": {
+                                      "type": "string",
+                                      "example": "2018"
+                                    },
+                                    "year_end": {
+                                      "type": "string",
+                                      "example": "2010"
+                                    },
+                                    "end_reason": {
+                                      "type": "string",
+                                      "example": "GRADE"
+                                    },
+                                    "is_confirm": {
+                                      "type": "string",
+                                      "example": "1"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "degree": {
+                                  "type": "object",
+                                  "properties": {
+                                    "level": {
+                                      "type": "string",
+                                      "example": "Degree"
+                                    },
+                                    "school": {
+                                      "type": "string",
+                                      "example": "UTM"
+                                    },
+                                    "program": {
+                                      "type": "string",
+                                      "example": "SC"
+                                    },
+                                    "result": {
+                                      "type": "string",
+                                      "example": "3.9"
+                                    },
+                                    "country": {
+                                      "type": "string",
+                                      "example": "Malaysia"
+                                    },
+                                    "achivement": {
+                                      "type": "string",
+                                      "example": "Dean List"
+                                    },
+                                    "scholarship": {
+                                      "type": "string",
+                                      "example": "MARA"
+                                    },
+                                    "year_start": {
+                                      "type": "string",
+                                      "example": "2018"
+                                    },
+                                    "year_end": {
+                                      "type": "string",
+                                      "example": "2010"
+                                    },
+                                    "end_reason": {
+                                      "type": "string",
+                                      "example": "GRADE"
+                                    },
+                                    "is_confirm": {
+                                      "type": "string",
+                                      "example": "1"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "phd": {
+                                  "type": "object",
+                                  "properties": {
+                                    "level": {
+                                      "type": "string",
+                                      "example": "phd"
+                                    },
+                                    "school": {
+                                      "type": "string",
+                                      "example": "UTM"
+                                    },
+                                    "program": {
+                                      "type": "string",
+                                      "example": "SC"
+                                    },
+                                    "result": {
+                                      "type": "string",
+                                      "example": "3.9"
+                                    },
+                                    "country": {
+                                      "type": "string",
+                                      "example": "Malaysia"
+                                    },
+                                    "achivement": {
+                                      "type": "string",
+                                      "example": "Dean List"
+                                    },
+                                    "scholarship": {
+                                      "type": "string",
+                                      "example": "MARA"
+                                    },
+                                    "year_start": {
+                                      "type": "string",
+                                      "example": "2018"
+                                    },
+                                    "year_end": {
+                                      "type": "string",
+                                      "example": "2010"
+                                    },
+                                    "end_reason": {
+                                      "type": "string",
+                                      "example": "GRADE"
+                                    },
+                                    "is_confirm": {
+                                      "type": "string",
+                                      "example": "1"
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "system": {
+                              "type": "object",
+                              "properties": {
+                                "create_at": {
+                                  "type": "string",
+                                  "format": "date",
+                                  "example": "2024-04-04"
+                                },
+                                "create_by": {
+                                  "type": "string",
+                                  "example": "65a9389718b4a"
+                                },
+                                "update_by": {
+                                  "type": "string",
+                                  "example": "65a9389718b4a"
+                                },
+                                "update_at": {
+                                  "type": "string",
+                                  "format": "date",
+                                  "example": "2024-05-18"
+                                },
+                                "delete_at": {
+                                  "type": "string"
+                                },
+                                "delete_by": {
+                                  "type": "string"
+                                }
+                              },
+                              "additionalProperties": false
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      },
                       "additionalProperties": false
                     }
                   },
@@ -124,7 +1384,7 @@
           "400": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -159,7 +1419,7 @@
           "404": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "seccess"
@@ -191,7 +1451,7 @@
           "500": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "success"
@@ -224,369 +1484,7 @@
         "x-codegen-request-body-name": ""
       }
     },
-    "/alumni/update": {
-      "post": {
-        "description": "This end point updates alumni data based on uid. To update a specific form category there must provide form_type: value and that category's fields in the payload. And the form_type values are ('personal', 'address', 'job', 'spm', 'others', 'bachelor', 'masters', 'degree', 'phd').",
-        "parameters": [
-          {
-            "name": "x-encrypted-key",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-encrypted-user",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "dsfsdfsdf",
-          "content": {
-            "*/*": {
-              "schema": {
-                "required": [
-                  "action",
-                  "filter_uid",
-                  "form_type"
-                ],
-                "type": "object",
-                "properties": {
-                  "action": {
-                    "type": "string",
-                    "default": "update_alumni"
-                  },
-                  "filter_uid": {
-                    "type": "string",
-                    "example": "A0003"
-                  },
-                  "form_type": {
-                    "type": "string",
-                    "example": "personal"
-                  },
-                  "data": {
-                    "type": "object",
-                    "additionalProperties": false
-                  }
-                },
-                "additionalProperties": false,
-                "description": "dsfsdfsdf"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "alumni data updated successfully"
-                    },
-                    "data": {
-                      "type": "string"
-                    }
-                  },
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "required": [
-                    "debug",
-                    "error",
-                    "message",
-                    "success"
-                  ],
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Bad Request"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Value is not allowed to be empty"
-                    },
-                    "debug": {
-                      "type": "string",
-                      "example": "N/A"
-                    }
-                  },
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "required": [
-                    "error",
-                    "message",
-                    "success"
-                  ],
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Not Found"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Action not found"
-                    }
-                  },
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "required": [
-                    "debug",
-                    "error",
-                    "message",
-                    "success"
-                  ],
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Bad Gateway"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal server error"
-                    },
-                    "debug": {
-                      "type": "string",
-                      "example": "N/A"
-                    }
-                  },
-                  "additionalProperties": false
-                }
-              }
-            }
-          }
-        },
-        "x-codegen-request-body-name": ""
-      }
-    },
-    "/alumni/create": {
-      "post": {
-        "description": "This API create alumni data.",
-        "parameters": [
-          {
-            "name": "x-encrypted-key",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-encrypted-user",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "dsfsdfsdf",
-          "content": {
-            "*/*": {
-              "schema": {
-                "required": [
-                  "action"
-                ],
-                "type": "object",
-                "properties": {
-                  "action": {
-                    "type": "string",
-                    "default": "create_alumni"
-                  },
-                  "data": {
-                    "type": "object",
-                    "additionalProperties": false
-                  }
-                },
-                "additionalProperties": false,
-                "description": "dsfsdfsdf"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "alumni data created successfully"
-                    },
-                    "data": {
-                      "type": "string"
-                    }
-                  },
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "required": [
-                    "debug",
-                    "error",
-                    "message",
-                    "success"
-                  ],
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Bad Request"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Value is not allowed to be empty"
-                    },
-                    "debug": {
-                      "type": "string",
-                      "example": "N/A"
-                    }
-                  },
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "required": [
-                    "error",
-                    "message",
-                    "success"
-                  ],
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Not Found"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Action not found"
-                    }
-                  },
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "required": [
-                    "debug",
-                    "error",
-                    "message",
-                    "success"
-                  ],
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Bad Gateway"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal server error"
-                    },
-                    "debug": {
-                      "type": "string",
-                      "example": "N/A"
-                    }
-                  },
-                  "additionalProperties": false
-                }
-              }
-            }
-          }
-        },
-        "x-codegen-request-body-name": ""
-      }
-    },
-    "/alumni/details": {
+    "/api/v2/crm/{app}/{user}/alumni-details": {
       "post": {
         "description": "This API retrieves alumni data based on uid.",
         "parameters": [
@@ -605,11 +1503,33 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "app",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "default": "eboss"
+          },
+          {
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "default": "alumni"
+          }
+        ],
+        "tags": [
+          "alumni"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
           }
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "required": [
                   "action",
@@ -636,10 +1556,10 @@
           "200": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
-                    "data(1)",
+                    "data",
                     "message",
                     "success"
                   ],
@@ -653,8 +1573,672 @@
                       "type": "string",
                       "example": "alumni data fetched successfully"
                     },
-                    "data(1)": {
+                    "data": {
                       "type": "object",
+                      "required": [
+                        "branch_id",
+                        "is_delete",
+                        "personal",
+                        "alumni",
+                        "sid",
+                        "address",
+                        "job",
+                        "education",
+                        "system"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 48
+                        },
+                        "uid": {
+                          "type": "string",
+                          "example": "65a93bb149982"
+                        },
+                        "ic": {
+                          "type": "string",
+                          "example": "4567890"
+                        },
+                        "branch_id": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "user_no": {
+                          "type": "string",
+                          "example": "0"
+                        },
+                        "user_type": {
+                          "type": "string",
+                          "example": "ALUMNI"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Razali"
+                        },
+                        "phone": {
+                          "type": "string",
+                          "example": "013567890"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "demo@mail.com"
+                        },
+                        "category": {
+                          "type": "string",
+                          "example": "category"
+                        },
+                        "category_name": {
+                          "type": "string",
+                          "example": "category name"
+                        },
+                        "group": {
+                          "type": "string",
+                          "example": "group"
+                        },
+                        "group_name": {
+                          "type": "string",
+                          "example": "group name"
+                        },
+                        "subgroup": {
+                          "type": "string",
+                          "example": "subgroup"
+                        },
+                        "subgroup_name": {
+                          "type": "string",
+                          "example": "subgroup name"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "status"
+                        },
+                        "status_name": {
+                          "type": "string",
+                          "example": "status name"
+                        },
+                        "is_delete": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "personal": {
+                          "type": "object",
+                          "required": [
+                            "full_name",
+                            "nick_name"
+                          ],
+                          "properties": {
+                            "full_name": {
+                              "type": "string",
+                              "example": "Mr Razali"
+                            },
+                            "nick_name": {
+                              "type": "string",
+                              "example": "Razali"
+                            },
+                            "gender": {
+                              "type": "string",
+                              "example": "1"
+                            },
+                            "birth_date": {
+                              "type": "string",
+                              "format": "date",
+                              "example": "1987-04-02"
+                            },
+                            "race": {
+                              "type": "string",
+                              "example": "Malay"
+                            },
+                            "religion": {
+                              "type": "string",
+                              "example": "islam"
+                            },
+                            "file_profile": {
+                              "type": "string",
+                              "example": "file_profile.jpg"
+                            },
+                            "file_profile_path": {
+                              "type": "string",
+                              "example": "/testalumni/content/alumni"
+                            },
+                            "primary_phone": {
+                              "type": "string",
+                              "example": "014567890"
+                            },
+                            "secondary_phone": {
+                              "type": "string",
+                              "example": "014567890"
+                            },
+                            "primary_email": {
+                              "type": "string",
+                              "example": "demo@email.com"
+                            },
+                            "secondary_email": {
+                              "type": "string",
+                              "example": "demo2@email.com"
+                            },
+                            "citizen": {
+                              "type": "string",
+                              "example": "malaysia"
+                            },
+                            "education": {
+                              "type": "string",
+                              "example": "phd"
+                            },
+                            "marital": {
+                              "type": "string",
+                              "example": "married"
+                            },
+                            "file_profile_url": {
+                              "type": "string",
+                              "example": "file_profile_url.jpg"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "alumni": {
+                          "type": "object",
+                          "properties": {
+                            "school_code": {
+                              "type": "string",
+                              "example": "100"
+                            },
+                            "school_name": {
+                              "type": "string",
+                              "example": "TAHFIZ DIPLOMA MAAHAD"
+                            },
+                            "year_start": {
+                              "type": "string",
+                              "example": "2013"
+                            },
+                            "year_end": {
+                              "type": "string",
+                              "example": "2016"
+                            },
+                            "end_reason": {
+                              "type": "string",
+                              "example": "PP"
+                            },
+                            "is_confirm": {
+                              "type": "string",
+                              "example": "1"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "sid": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "address": {
+                          "type": "object",
+                          "properties": {
+                            "main": {
+                              "type": "object",
+                              "properties": {
+                                "line1": {
+                                  "type": "string",
+                                  "example": "no 5-1 jalan usj1/a"
+                                },
+                                "line2": {
+                                  "type": "string",
+                                  "example": "no 5-1 jalan usj1/a"
+                                },
+                                "city": {
+                                  "type": "string",
+                                  "example": "subang jaya"
+                                },
+                                "postcode ": {
+                                  "type": "string",
+                                  "example": "47500"
+                                },
+                                "state": {
+                                  "type": "string",
+                                  "example": "Selangor"
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "example": "Malaysia"
+                                },
+                                "is_confirm": {
+                                  "type": "string",
+                                  "example": "1"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "address2": {
+                              "type": "object",
+                              "properties": {
+                                "line1": {
+                                  "type": "string",
+                                  "example": "no 5-1 jalan usj1/a"
+                                },
+                                "line2": {
+                                  "type": "string",
+                                  "example": "no 5-1 jalan usj1/a"
+                                },
+                                "city": {
+                                  "type": "string",
+                                  "example": "subang jaya"
+                                },
+                                "postcode ": {
+                                  "type": "string",
+                                  "example": "47500"
+                                },
+                                "state": {
+                                  "type": "string",
+                                  "example": "Selangor"
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "example": "Malaysia"
+                                },
+                                "is_confirm": {
+                                  "type": "string",
+                                  "example": "1"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "address3": {
+                              "type": "object",
+                              "properties": {
+                                "line1": {
+                                  "type": "string",
+                                  "example": "no 5-1 jalan usj1/a"
+                                },
+                                "line2": {
+                                  "type": "string",
+                                  "example": "no 5-1 jalan usj1/a"
+                                },
+                                "city": {
+                                  "type": "string",
+                                  "example": "subang jaya"
+                                },
+                                "postcode ": {
+                                  "type": "string",
+                                  "example": "47500"
+                                },
+                                "state": {
+                                  "type": "string",
+                                  "example": "Selangor"
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "example": "Malaysia"
+                                },
+                                "is_confirm": {
+                                  "type": "string",
+                                  "example": "1"
+                                }
+                              },
+                              "additionalProperties": false
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "job": {
+                          "type": "object",
+                          "properties": {
+                            "company": {
+                              "type": "string",
+                              "example": "Tidah"
+                            },
+                            "designation": {
+                              "type": "string",
+                              "example": "Tidah"
+                            },
+                            "division": {
+                              "type": "string",
+                              "example": "IT"
+                            },
+                            "specialization": {
+                              "type": "string",
+                              "example": "PERAKAUNAN"
+                            },
+                            "salary": {
+                              "type": "string",
+                              "example": "00000"
+                            },
+                            "working_state": {
+                              "type": "string",
+                              "example": "Kedah"
+                            },
+                            "working_country": {
+                              "type": "string",
+                              "example": "Malaysia"
+                            },
+                            "achievement": {
+                              "type": "string",
+                              "example": "best staff 2001"
+                            },
+                            "is_confirm": {
+                              "type": "string",
+                              "example": "1"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "education": {
+                          "type": "object",
+                          "properties": {
+                            "spm": {
+                              "type": "object",
+                              "properties": {
+                                "level": {
+                                  "type": "string",
+                                  "example": "spm"
+                                },
+                                "school": {
+                                  "type": "string",
+                                  "example": "ST GEOAGE"
+                                },
+                                "program": {
+                                  "type": "string",
+                                  "example": "SASTERA"
+                                },
+                                "result": {
+                                  "type": "string",
+                                  "example": "10A"
+                                },
+                                "achievement": {
+                                  "type": "string",
+                                  "example": "BEST"
+                                },
+                                "year_end": {
+                                  "type": "string",
+                                  "example": "1999"
+                                },
+                                "is_confirm": {
+                                  "type": "string",
+                                  "example": "1"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "others": {
+                              "type": "object",
+                              "properties": {
+                                "programe": {
+                                  "type": "string",
+                                  "example": "Others"
+                                },
+                                "school": {
+                                  "type": "string",
+                                  "example": "UUM"
+                                },
+                                "course": {
+                                  "type": "string",
+                                  "example": "MATRIK"
+                                },
+                                "result": {
+                                  "type": "string",
+                                  "example": "3.0"
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "example": "Malaysia"
+                                },
+                                "achievement": {
+                                  "type": "string",
+                                  "example": "BEST"
+                                },
+                                "scholarship": {
+                                  "type": "string",
+                                  "example": "JPA"
+                                },
+                                "year_start": {
+                                  "type": "string",
+                                  "example": "1999"
+                                },
+                                "year_end": {
+                                  "type": "string",
+                                  "example": "2001"
+                                },
+                                "end_reason": {
+                                  "type": "string",
+                                  "example": "TAMAT"
+                                },
+                                "is_confirm": {
+                                  "type": "string",
+                                  "example": "1"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "bachelor_degree": {
+                              "type": "object",
+                              "properties": {
+                                "level": {
+                                  "type": "string",
+                                  "example": "Bachelor Degree"
+                                },
+                                "school": {
+                                  "type": "string",
+                                  "example": "MMU"
+                                },
+                                "program": {
+                                  "type": "string",
+                                  "example": "SC"
+                                },
+                                "result": {
+                                  "type": "string",
+                                  "example": "3.9"
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "example": "Malaysia"
+                                },
+                                "achivement": {
+                                  "type": "string",
+                                  "example": "Dean List"
+                                },
+                                "scholarship": {
+                                  "type": "string",
+                                  "example": "MARA"
+                                },
+                                "year_start": {
+                                  "type": "string",
+                                  "example": "2018"
+                                },
+                                "year_end": {
+                                  "type": "string",
+                                  "example": "2010"
+                                },
+                                "end_reason": {
+                                  "type": "string",
+                                  "example": "GRADE"
+                                },
+                                "is_confirm": {
+                                  "type": "string",
+                                  "example": "1"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "masters_degree": {
+                              "type": "object",
+                              "properties": {
+                                "level": {
+                                  "type": "string",
+                                  "example": "Masters Degree"
+                                },
+                                "school": {
+                                  "type": "string",
+                                  "example": "MMU"
+                                },
+                                "program": {
+                                  "type": "string",
+                                  "example": "SC"
+                                },
+                                "result": {
+                                  "type": "string",
+                                  "example": "3.9"
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "example": "Malaysia"
+                                },
+                                "achivement": {
+                                  "type": "string",
+                                  "example": "Dean List"
+                                },
+                                "scholarship": {
+                                  "type": "string",
+                                  "example": "MARA"
+                                },
+                                "year_start": {
+                                  "type": "string",
+                                  "example": "2018"
+                                },
+                                "year_end": {
+                                  "type": "string",
+                                  "example": "2010"
+                                },
+                                "end_reason": {
+                                  "type": "string",
+                                  "example": "GRADE"
+                                },
+                                "is_confirm": {
+                                  "type": "string",
+                                  "example": "1"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "degree": {
+                              "type": "object",
+                              "properties": {
+                                "level": {
+                                  "type": "string",
+                                  "example": "Degree"
+                                },
+                                "school": {
+                                  "type": "string",
+                                  "example": "UTM"
+                                },
+                                "program": {
+                                  "type": "string",
+                                  "example": "SC"
+                                },
+                                "result": {
+                                  "type": "string",
+                                  "example": "3.9"
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "example": "Malaysia"
+                                },
+                                "achivement": {
+                                  "type": "string",
+                                  "example": "Dean List"
+                                },
+                                "scholarship": {
+                                  "type": "string",
+                                  "example": "MARA"
+                                },
+                                "year_start": {
+                                  "type": "string",
+                                  "example": "2018"
+                                },
+                                "year_end": {
+                                  "type": "string",
+                                  "example": "2010"
+                                },
+                                "end_reason": {
+                                  "type": "string",
+                                  "example": "GRADE"
+                                },
+                                "is_confirm": {
+                                  "type": "string",
+                                  "example": "1"
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "phd": {
+                              "type": "object",
+                              "properties": {
+                                "level": {
+                                  "type": "string",
+                                  "example": "phd"
+                                },
+                                "school": {
+                                  "type": "string",
+                                  "example": "UTM"
+                                },
+                                "program": {
+                                  "type": "string",
+                                  "example": "SC"
+                                },
+                                "result": {
+                                  "type": "string",
+                                  "example": "3.9"
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "example": "Malaysia"
+                                },
+                                "achivement": {
+                                  "type": "string",
+                                  "example": "Dean List"
+                                },
+                                "scholarship": {
+                                  "type": "string",
+                                  "example": "MARA"
+                                },
+                                "year_start": {
+                                  "type": "string",
+                                  "example": "2018"
+                                },
+                                "year_end": {
+                                  "type": "string",
+                                  "example": "2010"
+                                },
+                                "end_reason": {
+                                  "type": "string",
+                                  "example": "GRADE"
+                                },
+                                "is_confirm": {
+                                  "type": "string",
+                                  "example": "1"
+                                }
+                              },
+                              "additionalProperties": false
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "system": {
+                          "type": "object",
+                          "properties": {
+                            "create_at": {
+                              "type": "string",
+                              "format": "date",
+                              "example": "2024-04-04"
+                            },
+                            "create_by": {
+                              "type": "string",
+                              "example": "65a9389718b4a"
+                            },
+                            "update_by": {
+                              "type": "string",
+                              "example": "65a9389718b4a"
+                            },
+                            "update_at": {
+                              "type": "string",
+                              "format": "date",
+                              "example": "2024-05-18"
+                            },
+                            "delete_at": {
+                              "type": "string"
+                            },
+                            "delete_by": {
+                              "type": "string"
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      },
                       "additionalProperties": false
                     }
                   },
@@ -666,7 +2250,7 @@
           "400": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -701,7 +2285,7 @@
           "404": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "seccess"
@@ -733,7 +2317,7 @@
           "500": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "success"
@@ -766,8 +2350,8 @@
         "x-codegen-request-body-name": ""
       }
     },
-    "/alumni/delete": {
-      "post": {
+    "/api/v2/crm/{app}/{user}/alumni-update": {
+      "put": {
         "description": "This end point updates alumni data based on uid. To update a specific form category there must provide form_type: value and that category's fields in the payload. And the form_type values are ('personal', 'address', 'job', 'spm', 'others', 'bachelor', 'masters', 'degree', 'phd').",
         "parameters": [
           {
@@ -785,12 +2369,1624 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "app",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "default": "eboss"
+          },
+          {
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "default": "alumni"
+          }
+        ],
+        "tags": [
+          "alumni"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "action",
+                  "filter_uid",
+                  "form_type"
+                ],
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "default": "update_alumni"
+                  },
+                  "filter_uid": {
+                    "type": "string",
+                    "example": "A0003"
+                  },
+                  "form_type": {
+                    "type": "string",
+                    "example": "personal"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "format": "double"
+                      },
+                      "uid": {
+                        "type": "string",
+                        "example": "65a93bb149982"
+                      },
+                      "branch_id": {
+                        "type": "integer",
+                        "example": 0
+                      },
+                      "user_no": {
+                        "type": "string",
+                        "example": "0"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Raza"
+                      },
+                      "phone": {
+                        "type": "string",
+                        "example": "01229032"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "raza@awfatech.com"
+                      },
+                      "category": {
+                        "type": "string",
+                        "example": "category"
+                      },
+                      "category_name": {
+                        "type": "string",
+                        "example": "category name"
+                      },
+                      "group": {
+                        "type": "string",
+                        "example": "group"
+                      },
+                      "group_name": {
+                        "type": "string",
+                        "example": "group name"
+                      },
+                      "subgroup": {
+                        "type": "string",
+                        "example": "subgroup"
+                      },
+                      "subgroup_name": {
+                        "type": "string",
+                        "example": "subgroup name"
+                      },
+                      "status": {
+                        "type": "string",
+                        "example": "status"
+                      },
+                      "status_name": {
+                        "type": "string",
+                        "example": "status name"
+                      },
+                      "is_delete": {
+                        "type": "integer",
+                        "example": 0
+                      },
+                      "personal": {
+                        "type": "object",
+                        "properties": {
+                          "full_name": {
+                            "type": "string",
+                            "example": "Ab Rahman "
+                          },
+                          "nick_name": {
+                            "type": "string",
+                            "example": "Rahman "
+                          },
+                          "gender": {
+                            "type": "string",
+                            "example": "1"
+                          },
+                          "birth_date": {
+                            "type": "string",
+                            "example": "04-02-1985"
+                          },
+                          "race": {
+                            "type": "string",
+                            "example": "malay"
+                          },
+                          "religion": {
+                            "type": "string",
+                            "example": "islam"
+                          },
+                          "file_profile": {
+                            "type": "string",
+                            "example": "file_profile.jpg"
+                          },
+                          "file_profile_path": {
+                            "type": "string",
+                            "example": "/testalumni/content/alumni"
+                          },
+                          "primary_phone": {
+                            "type": "string",
+                            "example": "0145827884"
+                          },
+                          "scondary_phone": {
+                            "type": "string",
+                            "example": "054827884"
+                          },
+                          "primary_email": {
+                            "type": "string",
+                            "example": "demo@awfatech.com"
+                          },
+                          "secondary_email": {
+                            "type": "string",
+                            "example": "demo1@awfatech.com"
+                          },
+                          "citizen": {
+                            "type": "string",
+                            "example": "Citizen"
+                          },
+                          "education": {
+                            "type": "string",
+                            "example": "education"
+                          },
+                          "marital": {
+                            "type": "string",
+                            "example": "married"
+                          },
+                          "file_profile_url": {
+                            "type": "string",
+                            "example": "file_profile_url.jpg"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "sid": {
+                        "type": "integer",
+                        "example": 0
+                      },
+                      "alumni": {
+                        "type": "object",
+                        "properties": {
+                          "school_code": {
+                            "type": "string",
+                            "example": "100 "
+                          },
+                          "school_name": {
+                            "type": "string",
+                            "example": "TAHFIZ DIPLOMA MAAHAD"
+                          },
+                          "year_start": {
+                            "type": "string",
+                            "example": "2014"
+                          },
+                          "year_end": {
+                            "type": "string",
+                            "example": "2016"
+                          },
+                          "end_reason": {
+                            "type": "string",
+                            "example": "0001"
+                          },
+                          "is_confirm": {
+                            "type": "string",
+                            "example": "1"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "address": {
+                        "type": "object",
+                        "properties": {
+                          "main": {
+                            "type": "object",
+                            "properties": {
+                              "line1": {
+                                "type": "string",
+                                "example": "no. 5-1 jalan usj1/a"
+                              },
+                              "line2": {
+                                "type": "string",
+                                "example": "ragalia business center"
+                              },
+                              "city": {
+                                "type": "string",
+                                "example": "subang jaya"
+                              },
+                              "postcode": {
+                                "type": "string",
+                                "example": "47600"
+                              },
+                              "state": {
+                                "type": "string",
+                                "example": "Selangor"
+                              },
+                              "country": {
+                                "type": "string",
+                                "example": "Malaysia"
+                              },
+                              "is_confirm": {
+                                "type": "string",
+                                "example": "1"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "address2": {
+                            "type": "object",
+                            "properties": {
+                              "line1": {
+                                "type": "string",
+                                "example": "no. 5-1 jalan usj1/a"
+                              },
+                              "line2": {
+                                "type": "string",
+                                "example": "ragalia business center"
+                              },
+                              "city": {
+                                "type": "string",
+                                "example": "subang jaya"
+                              },
+                              "postcode": {
+                                "type": "string",
+                                "example": "47600"
+                              },
+                              "state": {
+                                "type": "string",
+                                "example": "Selangor"
+                              },
+                              "country": {
+                                "type": "string",
+                                "example": "Malaysia"
+                              },
+                              "is_confirm": {
+                                "type": "string",
+                                "example": "1"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "address3": {
+                            "type": "object",
+                            "properties": {
+                              "company": {
+                                "type": "string",
+                                "example": "Tiada"
+                              },
+                              "line1": {
+                                "type": "string",
+                                "example": "no. 5-1 jalan usj1/a"
+                              },
+                              "line2": {
+                                "type": "string",
+                                "example": "ragalia business center"
+                              },
+                              "city": {
+                                "type": "string",
+                                "example": "subang jaya"
+                              },
+                              "postcode": {
+                                "type": "string",
+                                "example": "47600"
+                              },
+                              "state": {
+                                "type": "string",
+                                "example": "Selangor"
+                              },
+                              "country": {
+                                "type": "string",
+                                "example": "Malaysia"
+                              },
+                              "is_confirm": {
+                                "type": "string",
+                                "example": "1"
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "job": {
+                        "type": "object",
+                        "properties": {
+                          "company": {
+                            "type": "string",
+                            "example": "Tiada"
+                          },
+                          "designation": {
+                            "type": "string",
+                            "example": "Tiada"
+                          },
+                          "division": {
+                            "type": "string",
+                            "example": "IT"
+                          },
+                          "specialization": {
+                            "type": "string",
+                            "example": "PERAKAUNAN"
+                          },
+                          "salary": {
+                            "type": "string",
+                            "example": "0001"
+                          },
+                          "working_state": {
+                            "type": "string",
+                            "example": "Kedah"
+                          },
+                          "working_country": {
+                            "type": "string",
+                            "example": "Malaysia"
+                          },
+                          "achivement": {
+                            "type": "string",
+                            "example": "best staff 2001"
+                          },
+                          "is_confirm": {
+                            "type": "string",
+                            "example": "1"
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "education": {
+                        "type": "object",
+                        "properties": {
+                          "spm": {
+                            "type": "object",
+                            "properties": {
+                              "level": {
+                                "type": "string",
+                                "example": "SPM"
+                              },
+                              "school": {
+                                "type": "string",
+                                "example": "ST GEOAGE"
+                              },
+                              "program": {
+                                "type": "string",
+                                "example": "SASTERA"
+                              },
+                              "result": {
+                                "type": "string",
+                                "example": "10A"
+                              },
+                              "achievement": {
+                                "type": "string",
+                                "example": "BEST"
+                              },
+                              "year_end": {
+                                "type": "string",
+                                "example": "1999"
+                              },
+                              "is_confirm": {
+                                "type": "string",
+                                "example": "1"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "others": {
+                            "type": "object",
+                            "properties": {
+                              "program": {
+                                "type": "string",
+                                "example": "Others"
+                              },
+                              "school": {
+                                "type": "string",
+                                "example": "UUM"
+                              },
+                              "course": {
+                                "type": "string",
+                                "example": "MATRIK"
+                              },
+                              "result": {
+                                "type": "string",
+                                "example": "3.9"
+                              },
+                              "country": {
+                                "type": "string",
+                                "example": "Malaysia"
+                              },
+                              "achievement": {
+                                "type": "string",
+                                "example": "BEST"
+                              },
+                              "scholarship": {
+                                "type": "string",
+                                "example": "JPA"
+                              },
+                              "year_start": {
+                                "type": "string",
+                                "example": "1999"
+                              },
+                              "year_end": {
+                                "type": "string",
+                                "example": "2001"
+                              },
+                              "end_reason": {
+                                "type": "string",
+                                "example": "TAMAT"
+                              },
+                              "is_confirm": {
+                                "type": "string",
+                                "example": "1"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "BachelorDegree": {
+                            "type": "object",
+                            "properties": {
+                              "level": {
+                                "type": "string",
+                                "example": "Bachelor Degree"
+                              },
+                              "school": {
+                                "type": "string",
+                                "example": "MMU"
+                              },
+                              "program": {
+                                "type": "string",
+                                "example": "IT"
+                              },
+                              "result": {
+                                "type": "string",
+                                "example": "4.0"
+                              },
+                              "country": {
+                                "type": "string",
+                                "example": "Malaysia"
+                              },
+                              "achievement": {
+                                "type": "string",
+                                "example": "PADU"
+                              },
+                              "scholarship": {
+                                "type": "string",
+                                "example": "MARA"
+                              },
+                              "year_start": {
+                                "type": "string",
+                                "example": "2020"
+                              },
+                              "year_end": {
+                                "type": "string",
+                                "example": "2023"
+                              },
+                              "end_reason": {
+                                "type": "string",
+                                "example": "GRADE"
+                              },
+                              "is_confirm": {
+                                "type": "string",
+                                "example": "1"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "degree": {
+                            "type": "object",
+                            "properties": {
+                              "level": {
+                                "type": "string",
+                                "example": "Degree"
+                              },
+                              "school": {
+                                "type": "string",
+                                "example": "UTM"
+                              },
+                              "program": {
+                                "type": "string",
+                                "example": "SC"
+                              },
+                              "result": {
+                                "type": "string",
+                                "example": "3.9"
+                              },
+                              "country": {
+                                "type": "string",
+                                "example": "Malaysia"
+                              },
+                              "achievement": {
+                                "type": "string",
+                                "example": "DEAN LIST"
+                              },
+                              "scholarship": {
+                                "type": "string",
+                                "example": "MARA"
+                              },
+                              "year_start": {
+                                "type": "string",
+                                "example": "2017"
+                              },
+                              "year_end": {
+                                "type": "string",
+                                "example": "2019"
+                              },
+                              "end_reason": {
+                                "type": "string",
+                                "example": "GRADE"
+                              },
+                              "is_confirm": {
+                                "type": "string",
+                                "example": "1"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "phd": {
+                            "type": "object",
+                            "properties": {
+                              "level": {
+                                "type": "string",
+                                "example": "PHD"
+                              },
+                              "school": {
+                                "type": "string",
+                                "example": "UIA"
+                              },
+                              "program": {
+                                "type": "string",
+                                "example": "ACCOUNTING"
+                              },
+                              "result": {
+                                "type": "string",
+                                "example": "4.0"
+                              },
+                              "country": {
+                                "type": "string",
+                                "example": "Malaysia"
+                              },
+                              "achievement": {
+                                "type": "string",
+                                "example": "TOP"
+                              },
+                              "scholarship": {
+                                "type": "string",
+                                "example": "MARA"
+                              },
+                              "year_start": {
+                                "type": "string",
+                                "example": "2022"
+                              },
+                              "year_end": {
+                                "type": "string",
+                                "example": "2024"
+                              },
+                              "end_reason": {
+                                "type": "string",
+                                "example": "GRADE"
+                              },
+                              "is_confirm": {
+                                "type": "string",
+                                "example": "1"
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "system": {
+                        "type": "object",
+                        "properties": {
+                          "create_at": {
+                            "type": "string",
+                            "example": "18-01-2024"
+                          },
+                          "create_by": {
+                            "type": "string",
+                            "example": "65a9389718b4a"
+                          },
+                          "update_at": {
+                            "type": "string",
+                            "example": "19-01-2024"
+                          },
+                          "update_by": {
+                            "type": "string",
+                            "example": "65a93bb149982"
+                          },
+                          "delete_at": {
+                            "type": "string"
+                          },
+                          "delete_by": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false,
+                "description": "dsfsdfsdf"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "alumni data updated successfully"
+                    },
+                    "data": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action not found"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": ""
+      }
+    },
+    "/api/v2/crm/{app}/{user}/alumni-create": {
+      "post": {
+        "description": "This API create alumni data.",
+        "parameters": [
+          {
+            "name": "x-encrypted-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-encrypted-user",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "app",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "default": "eboss"
+          },
+          {
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "default": "alumni"
+          }
+        ],
+        "tags": [
+          "alumni"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "This API create alumni data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "action"
+                ],
+                "type": "object",
+                "properties": {
+                "action": {
+                  "type": "string",
+                  "default": "create_alumni"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    
+                    "ic": {
+                      "type": "string"
+      
+                    },
+                    "uid": {
+                      "type": "string",
+                      "example": "65a93bb149982"
+                    },
+                    "branch_id": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "user_no": {
+                      "type": "string",
+                      "example": "0"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Raza"
+                    },
+                    "phone": {
+                      "type": "string",
+                      "example": "01229032"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "raza@awfatech.com"
+                    },
+                    "category": {
+                      "type": "string",
+                      "example": "category"
+                    },
+                    "category_name": {
+                      "type": "string",
+                      "example": "category name"
+                    },
+                    "group": {
+                      "type": "string",
+                      "example": "group"
+                    },
+                    "group_name": {
+                      "type": "string",
+                      "example": "group name"
+                    },
+                    "subgroup": {
+                      "type": "string",
+                      "example": "subgroup"
+                    },
+                    "subgroup_name": {
+                      "type": "string",
+                      "example": "subgroup name"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "status"
+                    },
+                    "status_name": {
+                      "type": "string",
+                      "example": "status name"
+                    },
+                    "is_delete": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "personal": {
+                      "type": "object",
+                      "properties": {
+                        "full_name": {
+                          "type": "string",
+                          "example": "Ab Rahman "
+                        },
+                        "nick_name": {
+                          "type": "string",
+                          "example": "Rahman "
+                        },
+                        "gender": {
+                          "type": "string",
+                          "example": "1"
+                        },
+                        "birth_date": {
+                          "type": "string",
+                          "example": "04-02-1985"
+                        },
+                        "race": {
+                          "type": "string",
+                          "example": "malay"
+                        },
+                        "religion": {
+                          "type": "string",
+                          "example": "islam"
+                        },
+                        "file_profile": {
+                          "type": "string",
+                          "example": "file_profile.jpg"
+                        },
+                        "file_profile_path": {
+                          "type": "string",
+                          "example": "/testalumni/content/alumni"
+                        },
+                        "primary_phone": {
+                          "type": "string",
+                          "example": "0145827884"
+                        },
+                        "scondary_phone": {
+                          "type": "string",
+                          "example": "054827884"
+                        },
+                        "primary_email": {
+                          "type": "string",
+                          "example": "demo@awfatech.com"
+                        },
+                        "secondary_email": {
+                          "type": "string",
+                          "example": "demo1@awfatech.com"
+                        },
+                        "citizen": {
+                          "type": "string",
+                          "example": "Citizen"
+                        },
+                        "education": {
+                          "type": "string",
+                          "example": "education"
+                        },
+                        "marital": {
+                          "type": "string",
+                          "example": "married"
+                        },
+                        "file_profile_url": {
+                          "type": "string",
+                          "example": "file_profile_url.jpg"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "sid": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "alumni": {
+                      "type": "object",
+                      "properties": {
+                        "school_code": {
+                          "type": "string",
+                          "example": "100 "
+                        },
+                        "school_name": {
+                          "type": "string",
+                          "example": "TAHFIZ DIPLOMA MAAHAD"
+                        },
+                        "year_start": {
+                          "type": "string",
+                          "example": "2014"
+                        },
+                        "year_end": {
+                          "type": "string",
+                          "example": "2016"
+                        },
+                        "end_reason": {
+                          "type": "string",
+                          "example": "0001"
+                        },
+                        "is_confirm": {
+                          "type": "string",
+                          "example": "1"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "address": {
+                      "type": "object",
+                      "properties": {
+                        "main": {
+                          "type": "object",
+                          "properties": {
+                            "line1": {
+                              "type": "string",
+                              "example": "no. 5-1 jalan usj1/a"
+                            },
+                            "line2": {
+                              "type": "string",
+                              "example": "ragalia business center"
+                            },
+                            "city": {
+                              "type": "string",
+                              "example": "subang jaya"
+                            },
+                            "postcode": {
+                              "type": "string",
+                              "example": "47600"
+                            },
+                            "state": {
+                              "type": "string",
+                              "example": "Selangor"
+                            },
+                            "country": {
+                              "type": "string",
+                              "example": "Malaysia"
+                            },
+                            "is_confirm": {
+                              "type": "string",
+                              "example": "1"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "address2": {
+                          "type": "object",
+                          "properties": {
+                            "line1": {
+                              "type": "string",
+                              "example": "no. 5-1 jalan usj1/a"
+                            },
+                            "line2": {
+                              "type": "string",
+                              "example": "ragalia business center"
+                            },
+                            "city": {
+                              "type": "string",
+                              "example": "subang jaya"
+                            },
+                            "postcode": {
+                              "type": "string",
+                              "example": "47600"
+                            },
+                            "state": {
+                              "type": "string",
+                              "example": "Selangor"
+                            },
+                            "country": {
+                              "type": "string",
+                              "example": "Malaysia"
+                            },
+                            "is_confirm": {
+                              "type": "string",
+                              "example": "1"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "address3": {
+                          "type": "object",
+                          "properties": {
+                            "company": {
+                              "type": "string",
+                              "example": "Tiada"
+                            },
+                            "line1": {
+                              "type": "string",
+                              "example": "no. 5-1 jalan usj1/a"
+                            },
+                            "line2": {
+                              "type": "string",
+                              "example": "ragalia business center"
+                            },
+                            "city": {
+                              "type": "string",
+                              "example": "subang jaya"
+                            },
+                            "postcode": {
+                              "type": "string",
+                              "example": "47600"
+                            },
+                            "state": {
+                              "type": "string",
+                              "example": "Selangor"
+                            },
+                            "country": {
+                              "type": "string",
+                              "example": "Malaysia"
+                            },
+                            "is_confirm": {
+                              "type": "string",
+                              "example": "1"
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "job": {
+                      "type": "object",
+                      "properties": {
+                        "company": {
+                          "type": "string",
+                          "example": "Tiada"
+                        },
+                        "designation": {
+                          "type": "string",
+                          "example": "Tiada"
+                        },
+                        "division": {
+                          "type": "string",
+                          "example": "IT"
+                        },
+                        "specialization": {
+                          "type": "string",
+                          "example": "PERAKAUNAN"
+                        },
+                        "salary": {
+                          "type": "string",
+                          "example": "0001"
+                        },
+                        "working_state": {
+                          "type": "string",
+                          "example": "Kedah"
+                        },
+                        "working_country": {
+                          "type": "string",
+                          "example": "Malaysia"
+                        },
+                        "achivement": {
+                          "type": "string",
+                          "example": "best staff 2001"
+                        },
+                        "is_confirm": {
+                          "type": "string",
+                          "example": "1"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "education": {
+                      "type": "object",
+                      "properties": {
+                        "spm": {
+                          "type": "object",
+                          "properties": {
+                            "level": {
+                              "type": "string",
+                              "example": "SPM"
+                            },
+                            "school": {
+                              "type": "string",
+                              "example": "ST GEOAGE"
+                            },
+                            "program": {
+                              "type": "string",
+                              "example": "SASTERA"
+                            },
+                            "result": {
+                              "type": "string",
+                              "example": "10A"
+                            },
+                            "achievement": {
+                              "type": "string",
+                              "example": "BEST"
+                            },
+                            "year_end": {
+                              "type": "string",
+                              "example": "1999"
+                            },
+                            "is_confirm": {
+                              "type": "string",
+                              "example": "1"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "others": {
+                          "type": "object",
+                          "properties": {
+                            "program": {
+                              "type": "string",
+                              "example": "Others"
+                            },
+                            "school": {
+                              "type": "string",
+                              "example": "UUM"
+                            },
+                            "course": {
+                              "type": "string",
+                              "example": "MATRIK"
+                            },
+                            "result": {
+                              "type": "string",
+                              "example": "3.9"
+                            },
+                            "country": {
+                              "type": "string",
+                              "example": "Malaysia"
+                            },
+                            "achievement": {
+                              "type": "string",
+                              "example": "BEST"
+                            },
+                            "scholarship": {
+                              "type": "string",
+                              "example": "JPA"
+                            },
+                            "year_start": {
+                              "type": "string",
+                              "example": "1999"
+                            },
+                            "year_end": {
+                              "type": "string",
+                              "example": "2001"
+                            },
+                            "end_reason": {
+                              "type": "string",
+                              "example": "TAMAT"
+                            },
+                            "is_confirm": {
+                              "type": "string",
+                              "example": "1"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "BachelorDegree": {
+                          "type": "object",
+                          "properties": {
+                            "level": {
+                              "type": "string",
+                              "example": "Bachelor Degree"
+                            },
+                            "school": {
+                              "type": "string",
+                              "example": "MMU"
+                            },
+                            "program": {
+                              "type": "string",
+                              "example": "IT"
+                            },
+                            "result": {
+                              "type": "string",
+                              "example": "4.0"
+                            },
+                            "country": {
+                              "type": "string",
+                              "example": "Malaysia"
+                            },
+                            "achievement": {
+                              "type": "string",
+                              "example": "PADU"
+                            },
+                            "scholarship": {
+                              "type": "string",
+                              "example": "MARA"
+                            },
+                            "year_start": {
+                              "type": "string",
+                              "example": "2020"
+                            },
+                            "year_end": {
+                              "type": "string",
+                              "example": "2023"
+                            },
+                            "end_reason": {
+                              "type": "string",
+                              "example": "GRADE"
+                            },
+                            "is_confirm": {
+                              "type": "string",
+                              "example": "1"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "degree": {
+                          "type": "object",
+                          "properties": {
+                            "level": {
+                              "type": "string",
+                              "example": "Degree"
+                            },
+                            "school": {
+                              "type": "string",
+                              "example": "UTM"
+                            },
+                            "program": {
+                              "type": "string",
+                              "example": "SC"
+                            },
+                            "result": {
+                              "type": "string",
+                              "example": "3.9"
+                            },
+                            "country": {
+                              "type": "string",
+                              "example": "Malaysia"
+                            },
+                            "achievement": {
+                              "type": "string",
+                              "example": "DEAN LIST"
+                            },
+                            "scholarship": {
+                              "type": "string",
+                              "example": "MARA"
+                            },
+                            "year_start": {
+                              "type": "string",
+                              "example": "2017"
+                            },
+                            "year_end": {
+                              "type": "string",
+                              "example": "2019"
+                            },
+                            "end_reason": {
+                              "type": "string",
+                              "example": "GRADE"
+                            },
+                            "is_confirm": {
+                              "type": "string",
+                              "example": "1"
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "phd": {
+                          "type": "object",
+                          "properties": {
+                            "level": {
+                              "type": "string",
+                              "example": "PHD"
+                            },
+                            "school": {
+                              "type": "string",
+                              "example": "UIA"
+                            },
+                            "program": {
+                              "type": "string",
+                              "example": "ACCOUNTING"
+                            },
+                            "result": {
+                              "type": "string",
+                              "example": "4.0"
+                            },
+                            "country": {
+                              "type": "string",
+                              "example": "Malaysia"
+                            },
+                            "achievement": {
+                              "type": "string",
+                              "example": "TOP"
+                            },
+                            "scholarship": {
+                              "type": "string",
+                              "example": "MARA"
+                            },
+                            "year_start": {
+                              "type": "string",
+                              "example": "2022"
+                            },
+                            "year_end": {
+                              "type": "string",
+                              "example": "2024"
+                            },
+                            "end_reason": {
+                              "type": "string",
+                              "example": "GRADE"
+                            },
+                            "is_confirm": {
+                              "type": "string",
+                              "example": "1"
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "system": {
+                      "type": "object",
+                      "properties": {
+                        "create_at": {
+                          "type": "string",
+                          "example": "18-01-2024"
+                        },
+                        "create_by": {
+                          "type": "string",
+                          "example": "65a9389718b4a"
+                        },
+                        "update_at": {
+                          "type": "string",
+                          "example": "19-01-2024"
+                        },
+                        "update_by": {
+                          "type": "string",
+                          "example": "65a93bb149982"
+                        },
+                        "delete_at": {
+                          "type": "string"
+                        },
+                        "delete_by": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                }
+                },
+                "additionalProperties": false,
+                "description": "dsfsdfsdf"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "alumni data created successfully"
+                    },
+                    "data": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Value is not allowed to be empty"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Action not found"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "debug",
+                    "error",
+                    "message",
+                    "success"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Gateway"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "debug": {
+                      "type": "string",
+                      "example": "N/A"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": ""
+      }
+    },
+    "/api/v2/crm/{app}/{user}/alumni-delete": {
+      "post": {
+        "description": "This API delete alumni data.",
+        "parameters": [
+          {
+            "name": "x-encrypted-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-encrypted-user",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "app",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "default": "eboss"
+          },
+          {
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "default": "alumni"
+          }
+        ],
+        "tags": [
+          "alumni"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
           }
         ],
         "requestBody": {
           "description": "dsfsdfsdf",
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "required": [
                   "action",
@@ -818,7 +4014,7 @@
           "200": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -842,7 +4038,7 @@
           "400": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -877,7 +4073,7 @@
           "404": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "error",
@@ -907,7 +4103,7 @@
           "500": {
             "description": "",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "required": [
                     "debug",
@@ -944,6 +4140,5 @@
       }
     }
   },
-  "components": {},
   "x-original-swagger-version": "2.0"
 }
