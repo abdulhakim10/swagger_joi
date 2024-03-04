@@ -4,93 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page with Search Bar and Lists</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        header {
-            background-color: #333;
-            padding: 10px;
-            text-align: center;
-            color: white;
-        }
-
-        main {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            padding: 10px;
-            background-color: #fff;
-        }
-
-        input[type="text"] {
-            padding: 8px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            padding: 8px 12px;
-            font-size: 16px;
-            background-color: #333;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        a {
-            text-decoration: none;
-            color: #333;
-            font-weight:600;
-        }
-
-        .hover:hover{
-            background-color: gray;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="./style.css">
+    
 </head>
 <body>
 
     <header>
-        <h1>Awfatech API Documentation</h1>
-        <!-- <div>
-            <input type="text" id="searchInput" placeholder="Search...">
-            <button onclick="searchList()">Search</button>
-        </div> -->
+        
+            <h1>Awfatech API Documentation</h1>
+            <div>
+                <input type="text" id="searchInput" placeholder="Search..." oninput="updateSearch()">
+                <button onclick="searchList()">Search</button>
+            </div>
+       
     </header>
 
     <main>
         <ul>
-        <a href="/alumni"><li class="hover">Alumni</li></a>
-        <a href="/client"><li class="hover">Client</li></a>
-        <a href="/staff"><li class="hover">Staff</li></a>
-        <a href="/supplier"><li class="hover">Supplier</li></a>
+        <a href="/alumni"><li >Alumni</li></a>
+        <a href="/client"><li >Client</li></a>
+        <a href="/staff"><li >Staff</li></a>
+        <a href="/supplier"><li >Supplier</li></a>
             <!-- Add more list items as needed -->
         </ul>
+        <!-- <iframe src="https://translate.google.com/"></iframe> -->
+        <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/n0lYoYWYsFE?si=UA1qDhemp_W0i7OO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> -->
+
     </main>
 
     <script>
         function searchList() {
-            // Add your search functionality here
-            alert("Search functionality will be implemented here.");
+            var searchInput = document.getElementById('searchInput').value.trim();
+            if (searchInput !== "") {
+                // Redirect to the specified link
+                window.location.href = window.location.origin + '/' + searchInput;
+            } else {
+                alert("Please enter a search term.");
+            }
+        }
+
+        function updateSearch() {
+            // You can add additional functionality here, if needed
         }
     </script>
 

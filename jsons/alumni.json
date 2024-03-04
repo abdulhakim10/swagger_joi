@@ -2424,9 +2424,9 @@
                         "type": "number",
                         "format": "double"
                       },
-                      "uid": {
+                      "ic": {
                         "type": "string",
-                        "example": "65a93bb149982"
+                        "example": "7776666"
                       },
                       "branch_id": {
                         "type": "integer",
@@ -2523,7 +2523,7 @@
                             "type": "string",
                             "example": "0145827884"
                           },
-                          "scondary_phone": {
+                          "secondary_phone": {
                             "type": "string",
                             "example": "054827884"
                           },
@@ -2829,12 +2829,62 @@
                             },
                             "additionalProperties": false
                           },
-                          "BachelorDegree": {
+                          "bachelor-degree": {
                             "type": "object",
                             "properties": {
                               "level": {
                                 "type": "string",
                                 "example": "Bachelor Degree"
+                              },
+                              "school": {
+                                "type": "string",
+                                "example": "MMU"
+                              },
+                              "program": {
+                                "type": "string",
+                                "example": "IT"
+                              },
+                              "result": {
+                                "type": "string",
+                                "example": "4.0"
+                              },
+                              "country": {
+                                "type": "string",
+                                "example": "Malaysia"
+                              },
+                              "achievement": {
+                                "type": "string",
+                                "example": "PADU"
+                              },
+                              "scholarship": {
+                                "type": "string",
+                                "example": "MARA"
+                              },
+                              "year_start": {
+                                "type": "string",
+                                "example": "2020"
+                              },
+                              "year_end": {
+                                "type": "string",
+                                "example": "2023"
+                              },
+                              "end_reason": {
+                                "type": "string",
+                                "example": "GRADE"
+                              },
+                              "is_confirm": {
+                                "type": "string",
+                                "example": "1"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "masters-degree": {
+                            "type": "object",
+                            "properties": {
+                              "level": {
+                                "type": "string",
+                                "example": "Masters Degree"
                               },
                               "school": {
                                 "type": "string",
@@ -2981,35 +3031,8 @@
                           }
                         },
                         "additionalProperties": false
-                      },
-                      "system": {
-                        "type": "object",
-                        "properties": {
-                          "create_at": {
-                            "type": "string",
-                            "example": "18-01-2024"
-                          },
-                          "create_by": {
-                            "type": "string",
-                            "example": "65a9389718b4a"
-                          },
-                          "update_at": {
-                            "type": "string",
-                            "example": "19-01-2024"
-                          },
-                          "update_by": {
-                            "type": "string",
-                            "example": "65a93bb149982"
-                          },
-                          "delete_at": {
-                            "type": "string"
-                          },
-                          "delete_by": {
-                            "type": "string"
-                          }
-                        },
-                        "additionalProperties": false
                       }
+                    
                     },
                     "additionalProperties": false
                   }
